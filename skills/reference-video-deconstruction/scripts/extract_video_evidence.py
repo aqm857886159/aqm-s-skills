@@ -66,6 +66,51 @@ def _run(command: list[str], timeout: float = 180.0) -> subprocess.CompletedProc
     return subprocess.run(command, check=True, capture_output=True, text=True, timeout=timeout)
 
 
+def parse_visual_signal(log: str) -> dict[str, object]:
+    averages = [float(value) for value in re.findall(r"lavfi\.signalstats\.YAVG=([-0-9.]+)", log)]
+    minimums = [float(value) for value in re.findall(r"lavfi\.signalstats\.YMIN=([-0-9.]+)", log)]
+    maximums = [float(value) for value in re.findall(r"lavfi\.signalstats\.YMAX=([-0-9.]+)", log)]
+    frame_count = min(len(averages), len(minimums), len(maximums))
+    frames = list(zip(averages[:frame_count], minimums[:frame_count], maximums[:frame_count]))
+    black_count = sum(average <= 20 and maximum - minimum <= 16 for average, minimum, maximum in frames)
+    return {
+        "status": "ready" if frames else "unavailable",
+        "sampledFrameCount": frame_count,
+        "blackFrameCount": black_count,
+        "blackFrameRatio": round(black_count / frame_count, 3) if frame_count else None,
+        "lumaAverage": round(sum(averages[:frame_count]) / frame_count, 3) if frame_count else None,
+        "lumaMinimum": min(minimums[:frame_count]) if frame_count else None,
+        "lumaMaximum": max(maximums[:frame_count]) if frame_count else None,
+        "visiblePixelRangeDetected": any(maximum - minimum > 16 for _, minimum, maximum in frames),
+        "blackRule": "YAVG<=20 and YMAX-YMIN<=16",
+    }
+
+
+def _decibels(value: str | None) -> float | None:
+    if value is None or value == "-inf":
+        return None
+    try:
+        return float(value)
+    except ValueError:
+        return None
+
+
+def parse_audio_signal(log: str, has_audio: bool) -> dict[str, object]:
+    if not has_audio:
+        return {"status": "absent", "meanVolumeDb": None, "maxVolumeDb": None, "signalAboveMinus60Db": False}
+    mean_match = re.search(r"mean_volume:\s*(-inf|[-0-9.]+)\s*dB", log)
+    max_match = re.search(r"max_volume:\s*(-inf|[-0-9.]+)\s*dB", log)
+    mean_volume = _decibels(mean_match.group(1) if mean_match else None)
+    max_volume = _decibels(max_match.group(1) if max_match else None)
+    return {
+        "status": "ready" if max_match else "unavailable",
+        "meanVolumeDb": mean_volume,
+        "maxVolumeDb": max_volume,
+        "signalAboveMinus60Db": max_volume is not None and max_volume > -60,
+        "signalThresholdDb": -60,
+    }
+
+
 def _clear_generated_evidence(output_dir: Path) -> None:
     frames_dir = output_dir / "frames"
     if frames_dir.is_symlink():
@@ -98,6 +143,24 @@ def extract(video: Path, output_dir: Path, threshold: float = 0.32, max_frames: 
     probe = parse_probe(probe_raw)
     if not probe["hasVideo"]:
         raise ValueError(f"no video stream detected: {video}")
+    duration = float(probe["durationSeconds"])
+    visual_sample_limit = min(max_frames, 12)
+    uniform_fps = max(visual_sample_limit / duration, 0.001) if duration > 0 else 1
+    visual_scan = _run([
+        "ffmpeg", "-hide_banner", "-nostats", "-i", str(video),
+        "-vf", f"fps={uniform_fps:.8f},scale=160:-2,signalstats,metadata=print",
+        "-frames:v", str(visual_sample_limit), "-f", "null", "-",
+    ])
+    visual_signal = parse_visual_signal(visual_scan.stderr)
+    audio_scan_seconds = min(duration, 120.0)
+    if probe["hasAudio"]:
+        audio_scan = _run([
+            "ffmpeg", "-hide_banner", "-nostats", "-i", str(video),
+            "-t", str(audio_scan_seconds), "-vn", "-af", "volumedetect", "-f", "null", "-",
+        ])
+        audio_signal = parse_audio_signal(audio_scan.stderr, True)
+    else:
+        audio_signal = parse_audio_signal("", False)
     scene_pattern = frames_dir / "scene-%04d.jpg"
     scene = _run([
         "ffmpeg", "-y", "-hide_banner", "-i", str(video),
@@ -121,9 +184,25 @@ def extract(video: Path, output_dir: Path, threshold: float = 0.32, max_frames: 
         "schemaVersion": 1,
         "source": {"fileName": video.name, "contentHash": _sha256(video)},
         "probe": probe,
+        "visualSignal": visual_signal,
+        "audioSignal": audio_signal,
         "visualEvidence": evidence,
-        "coverage": {"sceneThreshold": threshold, "maxFrames": max_frames, "framesExtracted": len(evidence)},
-        "analysisStatus": {"visualEvidence": "ready", "asr": "not_run", "ocr": "not_run"},
+        "coverage": {
+            "sceneThreshold": threshold,
+            "maxFrames": max_frames,
+            "framesExtracted": len(evidence),
+            "visualSignalSampleLimit": visual_sample_limit,
+            "visualSignalSampling": "uniform-across-duration",
+            "audioSignalScanSeconds": audio_scan_seconds if probe["hasAudio"] else 0,
+            "audioSignalScanLimitSeconds": 120,
+        },
+        "analysisStatus": {
+            "visualEvidence": "ready",
+            "visualSignal": visual_signal["status"],
+            "audioSignal": audio_signal["status"],
+            "asr": "not_run",
+            "ocr": "not_run",
+        },
     }
     (output_dir / "evidence.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return result

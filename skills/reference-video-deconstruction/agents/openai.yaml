@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reference Video Deconstruction"
+  short_description: "Extract local video evidence and editing structure"
+  default_prompt: "Use $reference-video-deconstruction to inspect this local video and produce a timestamped evidence plan."

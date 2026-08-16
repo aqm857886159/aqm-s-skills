@@ -26,8 +26,8 @@
 
 - 采用开放 [Agent Skills specification](https://agentskills.io/specification)，`name` 与目录一致，主文件低于 500 行，资源只做一层引用。
 - 主安装入口使用 `npx skills add`。它能列出仓库 Skill，并为多个 Agent 安装；不为每个平台复制一套容易过期的说明。
-- 六个首发 Skill 都能在没有私有 API key 的情况下运行核心流程。GitHub 深研可以读本地 clone；B站和 arXiv 使用公开只读接口；视频只用本机 FFmpeg。
-- 不发布微信取钥能力。其版本依赖、隐私、账号风险和图片解密边界尚不足以作为通用公共 Skill。
+- 六个首发 Skill 都不要求私有云 API key。GitHub 深研可以读本地 clone；B站和 arXiv 使用公开只读接口；视频只用本机 FFmpeg；微信 Skill 提供显式风险门控的本机首次取钥方法，但 Agent 不会替用户确认或执行特权捕获。
+- 发布可审计的微信首次取钥方法，但默认只检查和干跑；Agent 不代替用户确认风险或运行特权命令，且明确限定 Apple Silicon/微信 4.1.x、账号隐私风险与媒体文件边界。
 - 不把采集和判断混为一层：脚本返回证据，Skill 负责判断；缺证据时降级或停止。
 
 ## 一手来源

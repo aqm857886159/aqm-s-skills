@@ -9,6 +9,7 @@ Always begin with:
 - duration, orientation, dimensions, video codec, frame rate;
 - audio stream presence and codec when detected;
 - frame extraction method, threshold, maximum, and actual count;
+- uniform luma sample count/rule and bounded audio-signal scan duration/threshold;
 - ASR, OCR, subtitle, and full-playback status: ready, partial, not run, or failed.
 
 ## Timeline row

@@ -7,6 +7,7 @@ import argparse
 import json
 import subprocess
 import sys
+import urllib.parse
 from collections import Counter
 from pathlib import Path
 
@@ -38,10 +39,19 @@ def _git(root: Path, *args: str) -> str | None:
 def _safe_remote(value: str | None) -> str | None:
     if not value:
         return value
-    if "@" in value and "://" in value:
-        scheme, rest = value.split("://", 1)
-        value = f"{scheme}://{rest.split('@', 1)[-1]}"
-    return value
+    if "://" in value:
+        parsed = urllib.parse.urlsplit(value)
+        host = parsed.hostname or ""
+        try:
+            port = parsed.port
+        except ValueError:
+            port = None
+        if port:
+            host = f"{host}:{port}"
+        return urllib.parse.urlunsplit((parsed.scheme, host, parsed.path, "", ""))
+    if "@" in value:
+        return value.split("@", 1)[-1]
+    return value.split("?", 1)[0].split("#", 1)[0]
 
 
 def build_snapshot(root: Path) -> dict[str, object]:
@@ -90,14 +100,22 @@ def main() -> int:
     parser.add_argument("repository", type=Path)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    payload = build_snapshot(args.repository)
+    exit_code = 0
+    try:
+        payload = {"status": "complete", **build_snapshot(args.repository)}
+    except (OSError, ValueError) as exc:
+        exit_code = 2
+        payload = {
+            "status": "failed",
+            "error": {"code": "snapshot_failed", "message": f"{type(exc).__name__}: {exc}"},
+        }
     body = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(body, encoding="utf-8")
     else:
         sys.stdout.write(body)
-    return 0
+    return exit_code
 
 
 if __name__ == "__main__":

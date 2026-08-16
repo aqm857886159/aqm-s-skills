@@ -1,14 +1,11 @@
 ---
 name: reference-video-deconstruction
 description: Deconstruct a local or user-authorized reference video into timestamped visual, audio, text, editing, and narrative evidence, then translate observed mechanisms into an original production plan. Use whenever the user asks to analyze a reference video, break down shots or pacing, inspect missing audio/black frames, reproduce a content structure, or says “拆解参考视频”“分析镜头节奏”“看看这条视频为什么有效”.
-license: MIT
-compatibility: Local extraction requires ffmpeg and ffprobe. Optional ASR/OCR needs runtime-provided tools; media stays local unless the user explicitly chooses an upload-capable tool.
-metadata:
-  author: aqm857886159
-  version: "0.1.0"
 ---
 
 # Reference Video Deconstruction
+
+Requirements: FFmpeg and FFprobe for local extraction. Optional ASR/OCR needs runtime-provided tools; keep media local unless the user explicitly approves an upload-capable tool.
 
 ## Mission
 
@@ -29,7 +26,7 @@ A strong deconstruction:
 
 1. **Confirm source and purpose.** Use a local file or user-authorized media. Establish whether the task is debugging playback, studying narrative, planning an edit, or recreating a general mechanism.
 2. **Probe before viewing.** From this Skill directory run `python3 scripts/extract_video_evidence.py /path/video.mp4 --output-dir /tmp/video-evidence --max-frames 24`. Check duration, orientation, codec, and `hasAudio` before making claims about silence or rendering.
-3. **Inspect extraction status.** Read `coverage` and `analysisStatus`. The bundled script creates bounded frames; ASR and OCR remain `not_run` until an actual runtime tool performs them.
+3. **Inspect extraction status.** Read `coverage`, `analysisStatus`, `visualSignal`, and `audioSignal`. The bundled script checks bounded luma samples and audio volume locally; the thresholds identify near-black/digital-silence evidence, not human-perceived quality. ASR and OCR remain `not_run` until an actual runtime tool performs them.
 4. **Build evidence lanes.** Read `references/deconstruction-contract.md`. Keep visual observations, audio/speech, on-screen text, edit transitions, and narrative interpretation in separate columns with timestamps.
 5. **Diagnose playback problems when relevant.** Compare source probe, decoded sample frames, canvas/preview behavior, mute/volume state, and application logs. A valid local decode plus a black canvas usually narrows the issue to rendering or asset delivery; it does not prove the exact cause.
 6. **Segment by meaningful change.** Use scene frames as candidates, then inspect around cuts. Do not equate every extracted frame with a shot or infer precise cut time when the evidence is sparse.
@@ -40,6 +37,8 @@ A strong deconstruction:
 ## Decision rules
 
 - `hasAudio: false` proves there is no detected audio stream; `hasAudio: true` does not prove it is audible or correctly mixed.
+- `audioSignal.signalAboveMinus60Db: false` means the bounded FFmpeg volume scan found no signal above its declared threshold; it does not diagnose mute state in the target app.
+- `visualSignal.blackFrameRatio` describes bounded decoded samples under the declared luma rule; it is not proof that every frame is black.
 - Successfully extracted frames prove FFmpeg can decode sampled source frames. They do not prove the target application's browser renderer can display them.
 - ASR text is a transcript candidate, not proof of exact wording. Mark confidence and language/tool when available.
 - OCR and subtitles describe text evidence; they do not replace visual inspection of placement, hierarchy, or occlusion.

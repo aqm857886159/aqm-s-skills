@@ -1,0 +1,4 @@
+interface:
+  display_name: "Creator Opportunity Radar"
+  short_description: "Rank evidence-backed creator opportunities"
+  default_prompt: "Use $creator-opportunity-radar to rank a small portfolio of evidence-backed content opportunities."

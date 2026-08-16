@@ -1,14 +1,11 @@
 ---
 name: bilibili-content-research
 description: Research a public Bilibili video from its metadata, subtitle tracks, bounded comment sample, and observable content structure, then separate audience evidence from interpretation. Use whenever the user provides a BV/video URL, asks to study a Bilibili creator or comments, wants content deconstruction or audience questions, or says “分析B站视频”“看评论区”“研究这个UP主/AV视频”.
-license: MIT
-compatibility: Public live collection requires network access. The bundled read-only collector uses Python 3.9+ with no cookies or third-party packages; Bilibili may change unofficial web endpoints.
-metadata:
-  author: aqm857886159
-  version: "0.1.0"
 ---
 
 # Bilibili Content Research
+
+Requirements: Python 3.9+ and network access for live public collection. The collector uses no cookies or third-party packages; Bilibili may change its web endpoints.
 
 ## Mission
 
@@ -28,7 +25,7 @@ A strong result:
 ## Workflow
 
 1. **Clarify the job.** Determine whether the user wants content structure, audience research, factual extraction, competitor learning, or feedback triage. Ask for a BV/URL if none is available.
-2. **Collect public evidence.** From this Skill directory run `python3 scripts/bilibili_public.py "<BV-or-URL>" --comments 20 --output /tmp/bilibili-evidence.json`. Start with 20 comments; raise the bound only when the user needs a broader sample.
+2. **Collect public evidence.** From this Skill directory run `python3 scripts/bilibili_public.py "<BV-or-URL>" --comments 20 --output /tmp/bilibili-evidence.json`. Start with 20 comments; raise the bound only when the user needs a broader sample. Commenter names are stably redacted within each video and cannot be joined across videos by default; use `--keep-comment-authors` only for an explicitly authorized local workflow.
 3. **Inspect coverage before analysis.** Read `coverage`, `errors`, and `boundaries`. Missing subtitles or comments is a result to report, not content to reconstruct.
 4. **Establish four layers.** Keep metadata, timed subtitles, comment evidence, and observed visual/audio evidence separate. If actual video inspection is necessary and permitted, sample it with the runtime's browser/media tools or `reference-video-deconstruction`.
 5. **Analyze for the stated job.** For content structure, map hook, promise, proof, progression, and CTA to timestamps. For audience research, cluster repeated questions, misunderstandings, objections, and praise; include representative links, not usernames.

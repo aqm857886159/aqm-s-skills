@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub Repository Research"
+  short_description: "Trace repository behavior and reuse boundaries"
+  default_prompt: "Use $github-repository-research to trace how this repository works and assess what can be reused."
