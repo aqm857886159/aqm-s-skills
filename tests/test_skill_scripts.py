@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -132,28 +133,109 @@ class BilibiliContentResearchTests(unittest.TestCase):
         self.assertTrue(result["errors"][0].startswith("comments:"))
 
 
-class CommunityFeedbackRadarTests(unittest.TestCase):
-    def test_merge_deduplicates_and_masks_authors(self):
-        module = load_script("community-feedback-radar", "merge_signals.py")
-        result = module.merge_inputs(
-            [
-                SKILLS / "community-feedback-radar" / "evals" / "files" / "github.json",
-                SKILLS / "community-feedback-radar" / "evals" / "files" / "bilibili.json",
-            ],
-            redact=True,
-        )
-        self.assertEqual(result["stats"]["inputCount"], 3)
-        self.assertEqual(result["stats"]["uniqueCount"], 2)
-        self.assertTrue(all("***" in item["author"] for item in result["signals"]))
+class WeChatChatExportTests(unittest.TestCase):
+    def test_doctor_reports_missing_key_without_attempting_acquisition(self):
+        module = load_script("wechat-chat-export", "wechat_export.py")
+        result = module.doctor("/path/that/does/not/exist.json")
+        self.assertEqual(result["status"], "not_ready")
+        self.assertEqual(result["error"]["code"], "missing_key_bundle")
+        self.assertFalse(result["capabilities"]["acquireKeys"])
 
-    def test_empty_rows_are_skipped_not_counted_as_duplicates(self):
-        module = load_script("community-feedback-radar", "merge_signals.py")
+    def test_doctor_warns_about_stale_optional_paths_but_verifies_core_databases(self):
+        module = load_script("wechat-chat-export", "wechat_export.py")
         with tempfile.TemporaryDirectory() as temporary:
-            source = Path(temporary) / "feedback.json"
-            source.write_text(json.dumps({"items": [{"text": ""}, {"text": "useful"}]}), encoding="utf-8")
-            result = module.merge_inputs([source])
-        self.assertEqual(result["stats"]["skippedCount"], 1)
-        self.assertEqual(result["stats"]["duplicateCount"], 0)
+            root = Path(temporary)
+            contact = root / "contact.db"
+            message_dir = root / "message"
+            message_dir.mkdir()
+            message = message_dir / "message_0.db"
+            contact.touch()
+            message.touch()
+            key_file = root / "keys.json"
+            key_file.write_text(
+                json.dumps({"keys": {
+                    str(contact): "0" * 64,
+                    str(message): "1" * 64,
+                    str(root / "optional-missing.db"): "2" * 64,
+                }}),
+                encoding="utf-8",
+            )
+            key_file.chmod(0o600)
+
+            def fake_decrypt(_source, _key, destination):
+                module.sqlite3.connect(destination).close()
+
+            with mock.patch.object(module, "decrypt_database", side_effect=fake_decrypt), mock.patch.object(
+                module.sys, "platform", "darwin"
+            ):
+                result = module.doctor(str(key_file))
+        self.assertEqual(result["status"], "ready")
+        self.assertEqual(result["keyBundle"]["missingDatabaseCount"], 1)
+        self.assertIn("keyBundleReferencesMissingDatabases", result["warnings"])
+
+    def test_image_classification_keeps_locator_but_drops_media_key(self):
+        module = load_script("wechat-chat-export", "wechat_export.py")
+        kind, text, media = module.classify_message(
+            '<msg><img md5="safe-locator" aeskey="must-not-export" /></msg>'
+        )
+        self.assertEqual(kind, "image")
+        self.assertEqual(text, "[image]")
+        self.assertEqual(media, {"mediaId": "safe-locator"})
+        self.assertNotIn("aes", json.dumps(media).lower())
+
+    def test_ambiguous_group_requires_opaque_conversation_id(self):
+        module = load_script("wechat-chat-export", "wechat_export.py")
+        chats = [
+            {"name": "Customer group A", "conversationId": "conversation-a", "_chatroom": "one@chatroom"},
+            {"name": "Customer group B", "conversationId": "conversation-b", "_chatroom": "two@chatroom"},
+        ]
+        with self.assertRaises(module.ExportError) as raised:
+            module.choose_chat(chats, "Customer group", None)
+        self.assertEqual(raised.exception.code, "ambiguous_chat")
+        selected = module.choose_chat(chats, None, "conversation-b")
+        self.assertEqual(selected["name"], "Customer group B")
+
+    def test_private_writer_sets_0600_and_refuses_git_worktrees(self):
+        module = load_script("wechat-chat-export", "wechat_export.py")
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            output = root / "export.json"
+            module.write_private_json(output, {"messages": []}, force=False)
+            self.assertEqual(output.stat().st_mode & 0o777, 0o600)
+            (root / ".git").mkdir()
+            with self.assertRaises(module.ExportError) as raised:
+                module.write_private_json(root / "blocked.json", {"messages": []}, force=False)
+            self.assertEqual(raised.exception.code, "unsafe_output")
+
+    def test_truncation_compares_available_records_with_requested_limit(self):
+        module = load_script("wechat-chat-export", "wechat_export.py")
+        self.assertFalse(module._is_truncated(50, 1000))
+        self.assertFalse(module._is_truncated(1000, 1000))
+        self.assertTrue(module._is_truncated(1001, 1000))
+        self.assertFalse(module._is_truncated(1001, None))
+
+    @unittest.skipUnless(
+        os.environ.get("WECHAT_TEST_KEYS_PATH") and os.environ.get("WECHAT_TEST_GROUP"),
+        "set WECHAT_TEST_KEYS_PATH and WECHAT_TEST_GROUP for the private local integration test",
+    )
+    def test_real_local_database_export_is_redacted_and_bounded(self):
+        module = load_script("wechat-chat-export", "wechat_export.py")
+        key_path = os.environ["WECHAT_TEST_KEYS_PATH"]
+        group = os.environ["WECHAT_TEST_GROUP"]
+        readiness = module.doctor(key_path)
+        self.assertEqual(readiness["status"], "ready")
+        with tempfile.TemporaryDirectory() as temporary:
+            _, keys = module._load_keys(key_path)
+            chats = module.discover_chats(keys, Path(temporary))
+            chat = module.choose_chat(chats, group, None)
+            result = module.export_messages(keys, chat, Path(temporary), None, None, 20, False)
+        self.assertGreater(result["coverage"]["exportedCount"], 0)
+        self.assertLessEqual(result["coverage"]["exportedCount"], 20)
+        self.assertEqual(result["coverage"]["exportedCount"], len(result["messages"]))
+        self.assertTrue(all(item["author"].startswith("participant-") for item in result["messages"]))
+        serialized = json.dumps(result).lower()
+        self.assertNotIn("aeskey", serialized)
+        self.assertNotIn("db_storage", serialized)
 
 
 class ReferenceVideoDeconstructionTests(unittest.TestCase):

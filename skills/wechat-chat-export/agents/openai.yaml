@@ -1,0 +1,4 @@
+interface:
+  display_name: "WeChat Chat Export"
+  short_description: "Export authorized local WeChat chats safely"
+  default_prompt: "Use $wechat-chat-export to export a bounded, private copy of my local WeChat chat records."
