@@ -1,14 +1,11 @@
 ---
 name: paper-evidence-radar
 description: Search, verify, and triage recent academic papers into actionable methods, architecture lessons, and evaluation benchmarks. Use whenever the user asks for papers, literature review, arXiv research, latest/SOTA work, research radar, academic evidence, or wants to know what research can be applied to a real project; also trigger for Chinese requests such as “搜论文”“论文雷达”“最近有什么研究可以落地”.
-license: MIT
-compatibility: Live research requires network access. The bundled arXiv collector uses Python 3.9+ and no third-party packages.
-metadata:
-  author: aqm857886159
-  version: "0.1.0"
 ---
 
 # Paper Evidence Radar
+
+Requirements: Python 3.9+ for the bundled collector and network access for live research. Fixture parsing works offline and uses no third-party package.
 
 ## Mission
 
@@ -31,7 +28,7 @@ A strong result:
 
 1. **Frame the decision.** Restate the practical question, target system, constraints, and time horizon. Ask only when a missing constraint would materially change the search.
 2. **Define a search matrix.** Use 3-8 focused query lanes: task, failure mode, method family, benchmark, and relevant synonyms. Default to the last six months for fast-moving AI topics; widen only when foundational work is needed.
-3. **Collect candidates.** Use the runtime's web research tools. For a bounded arXiv starting set, run `python3 scripts/arxiv_search.py "<query>" --max-results 20 --since YYYY-MM-DD`. The script discovers candidates; it does not prove importance.
+3. **Collect candidates.** Use the runtime's web research tools. For a bounded arXiv starting set, run `python3 scripts/arxiv_search.py "<query>" --max-results 20 --since YYYY-MM-DD`. Natural multi-word queries default to term-wise `AND`; use `--query-mode phrase`, `any`, or `raw` only deliberately. Inspect `coverage.apiQuery`, pre/post-filter counts, and errors. The script discovers candidates; it does not prove importance.
 4. **Verify primary evidence.** Open the original abstract/paper and, when claimed, the official project or code repository. Record submission/update date, authors or lab, code/data availability, license, and reproduction boundary.
 5. **Deduplicate.** Collapse paper versions and compare against previous radar reports or the user's known list. A new arXiv version is an update, not automatically a new finding.
 6. **Triage every retained paper.** Read `references/evidence-rubric.md` and place each item in exactly one lane: actionable now, architecture lesson, or evaluation benchmark. Exclude weakly related items rather than creating a fourth “interesting” pile.

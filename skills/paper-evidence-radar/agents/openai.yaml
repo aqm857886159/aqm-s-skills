@@ -1,0 +1,4 @@
+interface:
+  display_name: "Paper Evidence Radar"
+  short_description: "Find actionable, verified research evidence"
+  default_prompt: "Use $paper-evidence-radar to find and triage current papers for a concrete product decision."

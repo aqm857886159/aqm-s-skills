@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bilibili Content Research"
+  short_description: "Research public videos, subtitles, and comments"
+  default_prompt: "Use $bilibili-content-research to analyze this public Bilibili video with bounded evidence."

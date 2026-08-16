@@ -1,10 +1,18 @@
 {
+  "asOfDate": "2026-08-17",
+  "evidence": [
+    {"id": "gh-17", "sourceType": "github", "capturedAt": "2026-08-15", "sourceUrl": "https://github.com/example/project/issues/17"},
+    {"id": "bili-22", "sourceType": "bilibili", "capturedAt": "2026-08-16", "sourceUrl": "https://www.bilibili.com/video/BV1xx411c7mD#reply22"},
+    {"id": "paper-audio", "sourceType": "paper", "capturedAt": "2026-08-12", "sourceUrl": "https://arxiv.org/abs/2608.12345"},
+    {"id": "one-post", "sourceType": "social", "capturedAt": "2026-08-16", "sourceUrl": "https://example.com/post/one"}
+  ],
   "opportunities": [
     {
       "id": "opp-evidence-rich",
       "title": "解释为什么导出后没有声音",
       "audienceTension": "用户能预览，但不理解导出静音的原因",
       "whyNow": "本周两个独立渠道出现同类问题",
+      "whyNowDate": "2026-08-16",
       "promise": "用可验证的音轨和导出链路证据解释静音问题",
       "differentiation": "真实探测文件并演示第一处失败，而不是罗列可能原因",
       "formatHypothesis": "8 分钟教程，包含一次正常和一次失败导出",
@@ -19,6 +27,7 @@
       "title": "泛泛讨论 AI",
       "audienceTension": "话题热但问题不具体",
       "whyNow": "感觉最近很火",
+      "whyNowDate": "2026-08-16",
       "promise": "概览近期 AI 话题",
       "differentiation": "尚未确定",
       "formatHypothesis": "短视频",

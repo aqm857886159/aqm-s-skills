@@ -1,82 +1,92 @@
-# Security, Setup, and Export Contract
+# Security and Zero-to-One Setup
 
-Read this reference when readiness fails, the user asks about key setup, media is required, or the export will leave the local machine.
+Read this file in full before guiding a user who has no working key bundle.
 
-## Supported Path
+## Scope
 
-The public Skill supports this sequence:
+The reviewed setup path supports Apple Silicon macOS, WeChat 4.1.x, and records the user is authorized to access. It may stop working on any update. It is not legal advice and does not make collection of other participants' data automatically lawful.
+
+This is a high-risk, unsupported debugging workflow. Do not try it for casual exploration. Use it only when the export is necessary, the account and device are yours or explicitly authorized, the purpose is lawful, and you personally accept every warning below.
+
+## Non-Negotiable Warnings
+
+- LLDB attachment and cryptographic-call interception may trigger WeChat account restrictions.
+- An ad-hoc signed app copy loses official signature guarantees.
+- A database key can unlock broad private history, not only one selected group.
+- Chat records may contain third-party personal information, secrets, files, links, and quoted content.
+- Similar tooling has faced platform enforcement and removal requests.
+
+Show all warnings before any mutating step. The Agent must never type the acknowledgement, run `sudo lldb`, quit WeChat, launch the debug copy, or decide that the risk is acceptable for the user.
+
+## Method
 
 ```text
-authorized local WeChat 4.x databases
-  + existing per-database key bundle
-  -> read-only temporary SQLCipher page decryption
-  -> bounded structured JSON export (0600)
-  -> optional local analysis
+read-only environment check
+  -> dry-run plan
+  -> user explicitly accepts risks
+  -> create ad-hoc signed copy under ~/.wechat-chat-export
+  -> user quits official app and launches the copy
+  -> generate, but do not execute, a PID-bound LLDB command
+  -> user personally runs command, then signs out and signs back in
+  -> capture the 32-byte passphrase at CCKeyDerivationPBKDF
+  -> derive per-database keys with PBKDF2-HMAC-SHA512 (256,000 rounds)
+  -> HMAC-verify candidates against encrypted database page one
+  -> atomically write ~/.wechat-bridge/keys.json with mode 0600
+  -> doctor decrypts and opens current contact/message databases
+  -> bounded export
 ```
 
-The exporter checks these key-bundle locations in order unless `--key-file` or `WECHAT_KEYS_PATH` is supplied:
+The official `/Applications/WeChat.app` is never re-signed. The capture-command generator refuses PIDs that do not belong to the prepared debug copy. The hook detaches after success, timeout, or failure; does not print the passphrase or full keys; accepts candidates only after SQLCipher 4 HMAC verification; and writes only a single account's verified contact/message key set.
 
-1. `~/.wechat-bridge/keys.json`
-2. `~/welive/wechat_keys.json`
+The login-time trigger and 256,000-round derivation follow the macOS 4.1.x method documented by [`TANGandXUE/wcdb-key-tool`](https://github.com/TANGandXUE/wcdb-key-tool). This Skill independently gates consent, avoids modifying the official app, verifies candidates, and limits output scope. Upstream success reports are evidence for the method, not a guarantee for a future WeChat or macOS release.
 
-The JSON must contain a `keys` object mapping current encrypted `.db` paths to 32-byte hexadecimal keys. Never pass a key on the command line, paste one into a prompt, or include one in an eval fixture.
+## Commands
 
-## Key Acquisition Is Separate
+Run the read-only check:
 
-This repository intentionally does not distribute a first-key acquisition script. Known approaches may require app re-signing, privileged debugger attachment, and interception of cryptographic calls. Those actions can:
+```bash
+python3 scripts/wechat_setup.py check
+```
 
-- weaken the integrity of the installed app;
-- expose a key that unlocks a broad set of private records;
-- violate platform or app terms and create account restrictions;
-- stop working across WeChat or macOS versions;
-- create privacy and legal obligations for other participants' messages.
+Inspect the dry-run plan:
 
-When `doctor` reports `missing_key_bundle`, stop and ask the user to provide an existing key bundle produced by a method they have separately reviewed and authorized. Do not download, generate, or execute a hook as an automatic fallback.
+```bash
+python3 scripts/wechat_setup.py prepare
+```
 
-## Read-Only Guarantees
+Only after personally accepting every warning, the user may create the copy:
 
-The bundled exporter:
+```bash
+python3 scripts/wechat_setup.py prepare \
+  --execute \
+  --ack-risk I_ACCEPT_WECHAT_ACCOUNT_AND_PRIVACY_RISKS
+```
 
-- opens encrypted source databases without modifying them;
-- writes decrypted SQLite pages only to a private temporary directory;
-- deletes that temporary directory when the command exits normally or raises a handled error;
-- writes the requested JSON atomically with permission mode `0600`;
-- rejects export destinations inside Git worktrees;
-- emits only a coverage summary to standard output after export.
+The user then quits the official app, launches the printed debug-copy command, logs in if required, and asks the Skill to generate a PID-bound capture command:
 
-An unexpected machine crash can leave operating-system temporary data behind. For high-sensitivity work, use an encrypted local volume and follow the user's retention policy.
+```bash
+python3 scripts/wechat_setup.py capture-command
+```
 
-## Export Schema
+The Agent displays the returned `shellCommand` but does not run it. After LLDB reports that the breakpoint is ready, the user personally signs out and signs back in using the debug copy. Login is the required trigger for `CCKeyDerivationPBKDF`; opening chats alone is not a reliable trigger. This can interrupt the current session and may invoke account security controls.
 
-The JSON root contains:
+After capture, verify rather than trust the file's existence:
 
-- `schemaVersion`, `source`, and `exportedAt`;
-- `conversation.name` and an opaque `conversationId`;
-- `coverage` with range, available/exported counts, truncation, scanned databases, matched tables, and decode failures;
-- `privacy` with author, path, media-key, and upload state;
-- `capabilities` and `warnings`;
-- `messages` with stable `id`, local `sourceId`, type, author, text, timestamp, and optional non-secret media metadata.
+```bash
+python3 scripts/wechat_export.py doctor
+```
 
-Default author values are deterministic pseudonyms so repeated messages can be grouped without exposing the local sender identifier. `--keep-authors` retains the identifier available in the message database; it does not resolve a person's real identity.
+`ready` means current contact and message databases were decrypted and opened. `partial`, `no_match`, a key file alone, or an old export is not success.
 
-## Media Boundary
+## Data Handling
 
-The export records that an image, video, or voice message occurred and retains safe locating metadata when available. It does not decrypt or copy the media file. In particular, WeChat 4.x image storage can use a separate V2 format and keys not provided by the chat database export. Never describe `[image]` as a successfully exported image.
+- Keep `~/.wechat-bridge` at mode `0700` and `keys.json` at `0600`.
+- Never paste, log, commit, sync, or upload the key bundle.
+- Export outside Git and keep default participant pseudonyms.
+- Prefer a date range and limit over full history.
+- Delete the debug app copy through a user-controlled, recoverable action after verification; do not automate deletion.
+- Prefer a derived minimal report over sharing the raw export.
 
-## Sharing Checklist
+## Tested Versus Documented
 
-Before moving an export off the local machine:
-
-1. Confirm the purpose, recipients, retention period, and participant authority.
-2. Keep default author pseudonyms unless identity is required.
-3. Remove message bodies not needed for the decision.
-4. Re-check for phone numbers, email addresses, tokens, private links, and quoted third-party content.
-5. Share a derived, minimal report instead of the raw export whenever possible.
-
-## Status Interpretation
-
-- `ready`: current contact and message databases were actually decrypted and opened.
-- `not_ready`: no export claim is allowed; follow `nextAction`.
-- retained JSON plus `not_ready`: historical evidence remains present, but new capture freshness and coverage are unavailable.
-- `truncated: true`: the export is a newest-first bounded sample, not full history.
-- `decodeFailures > 0`: some compressed bodies were not recovered; treat analysis as partial.
+The repository can safely automate tests for environment checks, consent gates, HMAC verification, secure key-file writing, command construction, current-key database verification, and real export. It must not rerun privileged capture merely to satisfy CI or an Agent test. Report manual privileged capture as a separate, version-specific step whose prior success does not guarantee future versions.

@@ -82,12 +82,16 @@ def _subtitle_url(value: object) -> str | None:
     return url
 
 
-def _normalize_comment(row: dict[str, Any], bvid: str) -> dict[str, object]:
+def _normalize_comment(row: dict[str, Any], bvid: str, keep_author: bool = False) -> dict[str, object]:
     created = row.get("ctime")
+    member = row.get("member") or {}
+    raw_author = str(member.get("mid") or member.get("uname") or row.get("rpid") or "anonymous")
+    scoped_author = f"{bvid}:{raw_author}"
+    author = str(member.get("uname") or "anonymous") if keep_author else f"commenter-{hashlib.sha256(scoped_author.encode()).hexdigest()[:10]}"
     return {
         "source": "bilibili",
         "sourceId": f"reply-{row.get('rpid')}",
-        "author": (row.get("member") or {}).get("uname") or "anonymous",
+        "author": author,
         "text": ((row.get("content") or {}).get("message") or "").strip(),
         "createdAt": datetime.fromtimestamp(created, timezone.utc).isoformat().replace("+00:00", "Z") if created else None,
         "likes": row.get("like", 0),
@@ -95,7 +99,14 @@ def _normalize_comment(row: dict[str, Any], bvid: str) -> dict[str, object]:
     }
 
 
-def _normalize(view: dict[str, Any], players: dict[str, Any], subtitle_bodies: dict[str, Any], comments: dict[str, Any], max_comments: int) -> dict[str, object]:
+def _normalize(
+    view: dict[str, Any],
+    players: dict[str, Any],
+    subtitle_bodies: dict[str, Any],
+    comments: dict[str, Any],
+    max_comments: int,
+    keep_comment_authors: bool = False,
+) -> dict[str, object]:
     video = _require_ok(view, "view")
     bvid = video.get("bvid")
     subtitles = []
@@ -114,7 +125,11 @@ def _normalize(view: dict[str, Any], players: dict[str, Any], subtitle_bodies: d
                 ],
             })
     comment_rows = (_require_ok(comments, "comments").get("replies") or [])[:max_comments]
-    normalized_comments = [_normalize_comment(row, bvid) for row in comment_rows if ((row.get("content") or {}).get("message") or "").strip()]
+    normalized_comments = [
+        _normalize_comment(row, bvid, keep_comment_authors)
+        for row in comment_rows
+        if ((row.get("content") or {}).get("message") or "").strip()
+    ]
     return {
         "status": "complete",
         "capturedAt": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
@@ -127,19 +142,31 @@ def _normalize(view: dict[str, Any], players: dict[str, Any], subtitle_bodies: d
         "subtitles": subtitles,
         "comments": normalized_comments,
         "coverage": {"pageCount": len(video.get("pages") or []), "subtitleTrackCount": len(subtitles), "commentLimit": max_comments, "commentRowsSampled": len(comment_rows), "commentsReturned": len(normalized_comments)},
-        "boundaries": {"authenticated": False, "downloadedVideo": False, "outboundActions": False},
+        "boundaries": {
+            "authenticated": False,
+            "downloadedVideo": False,
+            "outboundActions": False,
+            "commentAuthorsRedacted": not keep_comment_authors,
+        },
         "errors": [],
     }
 
 
-def normalize_fixture(payload: dict[str, Any], max_comments: int = 20) -> dict[str, object]:
+def normalize_fixture(payload: dict[str, Any], max_comments: int = 20, keep_comment_authors: bool = False) -> dict[str, object]:
     player = payload.get("player") or {"code": 0, "data": {}}
     pages = ((_require_ok(payload["view"], "view").get("pages")) or [])
     players = {str(page.get("cid")): player for page in pages}
-    return _normalize(payload["view"], players, payload.get("subtitleBodies") or {}, payload.get("comments") or {"code": 0, "data": {}}, max_comments)
+    return _normalize(
+        payload["view"],
+        players,
+        payload.get("subtitleBodies") or {},
+        payload.get("comments") or {"code": 0, "data": {}},
+        max_comments,
+        keep_comment_authors,
+    )
 
 
-def collect_public(bvid: str, max_comments: int = 20) -> dict[str, object]:
+def collect_public(bvid: str, max_comments: int = 20, keep_comment_authors: bool = False) -> dict[str, object]:
     referer = f"https://www.bilibili.com/video/{bvid}"
     view = _get_json(f"{API}/x/web-interface/view?{urllib.parse.urlencode({'bvid': bvid})}", referer)
     video = _require_ok(view, "view")
@@ -177,7 +204,7 @@ def collect_public(bvid: str, max_comments: int = 20) -> dict[str, object]:
             comments = fetched_comments
         except Exception as exc:
             errors.append(f"comments:{exc}")
-    result = _normalize(view, players, subtitle_bodies, comments, max_comments)
+    result = _normalize(view, players, subtitle_bodies, comments, max_comments, keep_comment_authors)
     result["errors"] = errors
     result["status"] = "partial" if errors else "complete"
     return result
@@ -193,7 +220,12 @@ def failure_result(bvid: str, max_comments: int, error: Exception) -> dict[str, 
         "subtitles": [],
         "comments": [],
         "coverage": {"pageCount": 0, "subtitleTrackCount": 0, "commentLimit": max_comments, "commentRowsSampled": 0, "commentsReturned": 0},
-        "boundaries": {"authenticated": False, "downloadedVideo": False, "outboundActions": False},
+        "boundaries": {
+            "authenticated": False,
+            "downloadedVideo": False,
+            "outboundActions": False,
+            "commentAuthorsRedacted": True,
+        },
         "errors": [f"metadata:{type(error).__name__}:{message}"],
     }
 
@@ -202,6 +234,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Read public Bilibili evidence without cookies or outbound actions.")
     parser.add_argument("video", nargs="?", help="BV id or Bilibili video URL")
     parser.add_argument("--comments", type=int, default=20)
+    parser.add_argument("--keep-comment-authors", action="store_true", help="Keep public commenter names in the local evidence file")
     parser.add_argument("--fixture", type=Path)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
@@ -209,11 +242,15 @@ def main() -> int:
         parser.error("--comments must be between 0 and 100")
     exit_code = 0
     if args.fixture:
-        result = normalize_fixture(json.loads(args.fixture.read_text(encoding="utf-8")), args.comments)
+        result = normalize_fixture(
+            json.loads(args.fixture.read_text(encoding="utf-8")),
+            args.comments,
+            args.keep_comment_authors,
+        )
     elif args.video:
         bvid = parse_bvid(args.video)
         try:
-            result = collect_public(bvid, args.comments)
+            result = collect_public(bvid, args.comments, args.keep_comment_authors)
         except Exception as exc:
             result = failure_result(bvid, args.comments, exc)
             exit_code = 2

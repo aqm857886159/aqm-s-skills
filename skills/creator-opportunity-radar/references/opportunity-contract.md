@@ -4,12 +4,17 @@
 
 ```json
 {
+  "asOfDate": "2026-08-17",
+  "evidence": [
+    {"id": "feedback-1", "sourceType": "community", "capturedAt": "2026-08-16", "sourceUrl": "local-or-public-evidence-link"}
+  ],
+  "opportunities": [{
   "id": "stable-opportunity-id",
   "title": "specific working title",
   "audienceTension": "who struggles, when, and consequence",
   "whyNow": "dated change that makes this timely",
+  "whyNowDate": "2026-08-16",
   "evidenceIds": ["feedback-1", "paper-2", "video-3"],
-  "sourceTypes": ["community", "research", "competitor"],
   "promise": "what the audience will understand or achieve",
   "differentiation": "access, proof, perspective, workflow, or format",
   "formatHypothesis": "channel, format, length, and proof device",
@@ -22,10 +27,11 @@
     "differentiation": 0,
     "feasibility": 0
   }
+  }]
 }
 ```
 
-All scores use 0-5. Preserve evidence in its originating artifact; IDs are references, not substitutes for citations.
+All scores use 0-5. Set `asOfDate` for deterministic ranking. Every evidence ID must resolve through the root evidence catalog; source diversity is derived from that catalog rather than trusted from the opportunity card. Preserve detailed evidence in its originating artifact; catalog entries are references, not substitutes for citations.
 
 ## Scoring anchors
 

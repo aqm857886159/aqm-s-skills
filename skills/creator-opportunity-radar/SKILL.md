@@ -1,14 +1,11 @@
 ---
 name: creator-opportunity-radar
 description: Synthesize audience feedback, creator/competitor content, repository capabilities, and current research into ranked, evidence-backed content or product opportunities. Use whenever the user asks what to make next, wants topic selection or creator positioning, needs to combine research into opportunity cards, or says “下一个选题做什么”“找内容机会”“结合评论和趋势给我方向”.
-license: MIT
-compatibility: Ranking works offline with Python 3.9+ and structured JSON. Evidence collection may use other installed research Skills and authorized public sources.
-metadata:
-  author: aqm857886159
-  version: "0.1.0"
 ---
 
 # Creator Opportunity Radar
+
+Requirements: Python 3.9+ for offline structured ranking. Evidence collection may use other installed research Skills and authorized public sources.
 
 ## Mission
 
@@ -32,7 +29,7 @@ A strong radar:
 3. **Find tensions, not keywords.** Look for costly misunderstandings, repeated unanswered questions, changing capabilities, newly feasible demonstrations, and gaps between what people want and what existing content proves.
 4. **Draft opportunity cards.** Read `references/opportunity-contract.md`. Each card needs title, audience tension, why now, evidence IDs, source types, a differentiated promise, format hypothesis, feasibility, risk, and validation action.
 5. **Check independence.** Three comments in one thread remain one source type. A competitor repeating a paper claim is not independent confirmation of the claim.
-6. **Score explicitly.** Put 0-5 values for relevance, timeliness, evidence, differentiation, and feasibility into JSON, then run `python3 scripts/rank_opportunities.py opportunities.json --output /tmp/ranked-opportunities.json`.
+6. **Score explicitly.** Build a root evidence catalog with stable ID, source type, capture date, and source URL; set a deterministic `asOfDate` and a `whyNowDate` on every card. Put 0-5 values for relevance, timeliness, evidence, differentiation, and feasibility into JSON, then run `python3 scripts/rank_opportunities.py opportunities.json --output /tmp/ranked-opportunities.json`. Unknown evidence IDs are invalid; source diversity is derived from the catalog.
 7. **Challenge the ranking.** Inspect rejected cards and gaps. A high weighted score without independent evidence remains low confidence. Keep one exploratory bet when its learning value is high, but label it.
 8. **Build a portfolio.** Default to three choices: one reliable audience need, one timely differentiated bet, and one low-cost experiment. Avoid six near-identical topics competing for the same production slot.
 9. **Deliver.** Lead with the recommended portfolio, then evidence cards, confidence/gaps, discarded ideas, and the next validation sequence. Do not publish or schedule content.

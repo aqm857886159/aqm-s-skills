@@ -15,6 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / "skills"
+RUN_LIVE_SKILL_TESTS = os.environ.get("RUN_LIVE_SKILL_TESTS") == "1"
 
 
 def load_script(skill: str, filename: str):
@@ -28,7 +29,23 @@ def load_script(skill: str, filename: str):
     return module
 
 
+class SkillPackagingTests(unittest.TestCase):
+    def test_default_prompts_reference_the_complete_skill_name(self):
+        for skill_directory in sorted(path for path in SKILLS.iterdir() if path.is_dir()):
+            metadata = (skill_directory / "agents" / "openai.yaml").read_text(encoding="utf-8")
+            self.assertIn(f"${skill_directory.name}", metadata, skill_directory.name)
+
+
 class PaperEvidenceRadarTests(unittest.TestCase):
+    def test_natural_multiword_query_is_not_forced_into_one_exact_phrase(self):
+        module = load_script("paper-evidence-radar", "arxiv_search.py")
+        query = module.build_search_query("video generation character consistency")
+        self.assertEqual(
+            query,
+            'all:"video" AND all:"generation" AND all:"character" AND all:"consistency"',
+        )
+        self.assertEqual(module.build_search_query("video generation", "phrase"), 'all:"video generation"')
+
     def test_parses_arxiv_atom_into_stable_evidence(self):
         module = load_script("paper-evidence-radar", "arxiv_search.py")
         items = module.parse_atom((SKILLS / "paper-evidence-radar" / "evals" / "files" / "arxiv.xml").read_bytes())
@@ -40,6 +57,14 @@ class PaperEvidenceRadarTests(unittest.TestCase):
 
 
 class GithubRepositoryResearchTests(unittest.TestCase):
+    def test_remote_url_credentials_query_and_fragment_are_redacted(self):
+        module = load_script("github-repository-research", "repo_snapshot.py")
+        self.assertEqual(
+            module._safe_remote("https://user:secret@github.com/org/repo.git?token=secret#fragment"),
+            "https://github.com/org/repo.git",
+        )
+        self.assertEqual(module._safe_remote("git@github.com:org/repo.git"), "github.com:org/repo.git")
+
     def test_snapshot_identifies_entrypoints_tests_and_license(self):
         module = load_script("github-repository-research", "repo_snapshot.py")
         snapshot = module.build_snapshot(SKILLS / "github-repository-research" / "evals" / "files" / "local-repo")
@@ -58,7 +83,16 @@ class BilibiliContentResearchTests(unittest.TestCase):
         self.assertEqual(result["video"]["bvid"], "BV1xx411c7mD")
         self.assertEqual(result["subtitles"][0]["segments"][0]["text"], "第一句字幕")
         self.assertEqual(len(result["comments"]), 1)
+        self.assertTrue(result["comments"][0]["author"].startswith("commenter-"))
+        self.assertTrue(result["boundaries"]["commentAuthorsRedacted"])
         self.assertEqual(result["coverage"]["commentLimit"], 1)
+
+    def test_comment_pseudonyms_are_scoped_to_one_video(self):
+        module = load_script("bilibili-content-research", "bilibili_public.py")
+        row = {"rpid": 1, "member": {"mid": "123"}, "content": {"message": "hello"}}
+        first = module._normalize_comment(row, "BV1xx411c7mD")
+        second = module._normalize_comment(row, "BV1yy411c7mD")
+        self.assertNotEqual(first["author"], second["author"])
 
     def test_fatal_collection_error_is_structured_and_read_only(self):
         module = load_script("bilibili-content-research", "bilibili_public.py")
@@ -133,13 +167,191 @@ class BilibiliContentResearchTests(unittest.TestCase):
         self.assertTrue(result["errors"][0].startswith("comments:"))
 
 
+@unittest.skipUnless(RUN_LIVE_SKILL_TESTS, "set RUN_LIVE_SKILL_TESTS=1 for public network smoke tests")
+class PublicLiveSkillTests(unittest.TestCase):
+    def test_arxiv_natural_query_returns_current_primary_links(self):
+        module = load_script("paper-evidence-radar", "arxiv_search.py")
+        papers, api_query = module.fetch_arxiv("video generation character consistency", 3)
+        self.assertGreater(len(papers), 0)
+        self.assertIn(" AND ", api_query)
+        self.assertTrue(all(str(paper["url"]).startswith("https://arxiv.org/abs/") for paper in papers))
+
+    def test_bilibili_public_metadata_and_comments_are_available_without_identity(self):
+        module = load_script("bilibili-content-research", "bilibili_public.py")
+        result = module.collect_public("BV1xx411c7mD", 2)
+        self.assertIn(result["status"], {"complete", "partial"})
+        self.assertTrue(result["video"]["title"])
+        self.assertGreater(len(result["comments"]), 0)
+        self.assertTrue(all(comment["author"].startswith("commenter-") for comment in result["comments"]))
+        self.assertFalse(result["boundaries"]["authenticated"])
+
+    def test_public_github_shallow_clone_can_be_snapshotted(self):
+        module = load_script("github-repository-research", "repo_snapshot.py")
+        with tempfile.TemporaryDirectory() as temporary:
+            repository = Path(temporary) / "agentskills"
+            subprocess.run(
+                ["git", "clone", "--depth", "1", "https://github.com/agentskills/agentskills.git", str(repository)],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            result = module.build_snapshot(repository)
+        self.assertEqual(result["git"]["branch"], "main")
+        self.assertEqual(result["git"]["status"], [])
+        self.assertIn("LICENSE", result["licenseFiles"])
+
+
 class WeChatChatExportTests(unittest.TestCase):
+    def test_setup_check_offers_manual_risk_path_when_no_key_is_ready(self):
+        module = load_script("wechat-chat-export", "wechat_setup.py")
+        not_ready = {
+            "status": "not_ready",
+            "platform": {"wechatVersion": "4.1.11"},
+            "keyBundle": {"found": False},
+            "database": {"contactDecryptable": False, "messageDecryptable": False},
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            app = root / "WeChat.app"
+            data = root / "xwechat_files"
+            (data / "account" / "db_storage").mkdir(parents=True)
+            app.mkdir()
+            with mock.patch.object(module.wechat_export, "doctor", return_value=not_ready), mock.patch.object(
+                module, "OFFICIAL_APP", app
+            ), mock.patch.object(module, "DATA_ROOT", data), mock.patch.object(
+                module, "DEBUG_APP", root / "debug" / "WeChat-debug.app"
+            ), mock.patch.object(module, "_tool_status", return_value={
+                "ditto": True, "codesign": True, "lldb": True, "open": True, "ps": True,
+            }), mock.patch.object(module.platform, "machine", return_value="arm64"), mock.patch.object(
+                module.sys, "platform", "darwin"
+            ):
+                result = module.setup_check()
+        self.assertEqual(result["status"], "manual_risk_setup_available")
+        self.assertTrue(result["risk"]["acknowledgementRequired"])
+        self.assertFalse(result["risk"]["automaticCapture"])
+        self.assertTrue(result["environment"]["reviewedWechatVersion"])
+
+    def test_setup_check_does_not_offer_capture_for_an_unreviewed_wechat_version(self):
+        module = load_script("wechat-chat-export", "wechat_setup.py")
+        not_ready = {
+            "status": "not_ready",
+            "platform": {"wechatVersion": "4.2.0"},
+            "keyBundle": {"found": False},
+            "database": {"contactDecryptable": False, "messageDecryptable": False},
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            app = root / "WeChat.app"
+            data = root / "xwechat_files"
+            (data / "account" / "db_storage").mkdir(parents=True)
+            app.mkdir()
+            with mock.patch.object(module.wechat_export, "doctor", return_value=not_ready), mock.patch.object(
+                module, "OFFICIAL_APP", app
+            ), mock.patch.object(module, "DATA_ROOT", data), mock.patch.object(
+                module, "_tool_status", return_value={
+                    "ditto": True, "codesign": True, "lldb": True, "open": True, "ps": True,
+                }
+            ), mock.patch.object(module.platform, "machine", return_value="arm64"), mock.patch.object(
+                module.sys, "platform", "darwin"
+            ):
+                result = module.setup_check()
+        self.assertEqual(result["status"], "unsupported_or_incomplete_environment")
+        self.assertFalse(result["environment"]["reviewedWechatVersion"])
+        self.assertFalse(result["risk"]["acknowledgementRequired"])
+
+    def test_default_key_discovery_skips_invalid_bundle_and_uses_next_valid_one(self):
+        module = load_script("wechat-chat-export", "wechat_export.py")
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            invalid = root / "invalid.json"
+            valid = root / "valid.json"
+            invalid.write_text("not json", encoding="utf-8")
+            valid.write_text(json.dumps({"keys": {str(root / "contact.db"): "a" * 64}}), encoding="utf-8")
+            with mock.patch.object(module, "DEFAULT_KEY_FILES", (invalid, valid)):
+                selected, keys = module._load_keys(None)
+        self.assertEqual(selected, valid.resolve())
+        self.assertEqual(len(keys), 1)
+
+    def test_zero_to_one_setup_is_dry_run_by_default_and_requires_exact_ack(self):
+        module = load_script("wechat-chat-export", "wechat_setup.py")
+        with tempfile.TemporaryDirectory() as temporary:
+            debug_root = Path(temporary) / ".wechat-chat-export"
+            debug_app = debug_root / "WeChat-debug.app"
+            with mock.patch.object(module, "DEBUG_ROOT", debug_root):
+                result = module.prepare_debug_copy(debug_app, execute=False, acknowledgement=None)
+                self.assertEqual(result["status"], "dry_run")
+                self.assertFalse(result["willModifyOriginalApp"])
+                self.assertFalse(debug_app.exists())
+                with mock.patch.object(module.subprocess, "run") as run:
+                    with self.assertRaises(module.SetupError) as raised:
+                        module.prepare_debug_copy(debug_app, execute=True, acknowledgement=None)
+                    run.assert_not_called()
+            self.assertEqual(raised.exception.code, "risk_not_acknowledged")
+
+    def test_setup_refuses_debug_copy_outside_private_root(self):
+        module = load_script("wechat-chat-export", "wechat_setup.py")
+        with self.assertRaises(module.SetupError) as raised:
+            module.prepare_debug_copy(Path("/Applications/Other-WeChat.app"), execute=False, acknowledgement=None)
+        self.assertEqual(raised.exception.code, "unsafe_debug_path")
+
+    def test_capture_command_is_pid_bound_and_never_run_by_setup_script(self):
+        module = load_script("wechat-chat-export", "wechat_setup.py")
+        with mock.patch.object(module, "_debug_processes", return_value=[4321]):
+            result = module.capture_command(module.DEBUG_APP, 4321, 180)
+        self.assertEqual(result["status"], "manual_command_ready")
+        self.assertFalse(result["runsAutomatically"])
+        self.assertIn("sudo lldb --batch -p 4321", result["shellCommand"])
+        self.assertIn("wechat_key_hook.py", result["shellCommand"])
+        self.assertIn("sign out and sign back in", result["manualTrigger"])
+
+    def test_key_hook_derives_verifies_and_writes_private_bundle_without_preview(self):
+        module = load_script("wechat-chat-export", "wechat_key_hook.py")
+        passphrase = bytes(range(32))
+        page = bytearray((index % 251) + 1 for index in range(module.PAGE_SIZE))
+        salt = bytes(range(16, 32))
+        page[:module.SALT_SIZE] = salt
+        encryption_key = module.derive_sqlcipher4_key(passphrase, bytes(page))
+        mac_salt = bytes(value ^ 0x3A for value in salt)
+        mac_key = module.hashlib.pbkdf2_hmac("sha512", encryption_key, mac_salt, 2, dklen=module.KEY_SIZE)
+        mac = module.hmac.new(
+            mac_key,
+            bytes(page[module.SALT_SIZE:module.PAGE_SIZE - module.RESERVE_SIZE + module.SALT_SIZE]),
+            module.hashlib.sha512,
+        )
+        mac.update(module.struct.pack("<I", 1))
+        page[module.PAGE_SIZE - module.HMAC_SIZE:module.PAGE_SIZE] = mac.digest()
+        self.assertTrue(module.verify_sqlcipher4_key(encryption_key, bytes(page)))
+        self.assertFalse(module.verify_sqlcipher4_key(b"x" * 32, bytes(page)))
+        self.assertEqual(module._breakpoint_specs("arm64")[0][0], "CCKeyDerivationPBKDF")
+
+        with tempfile.TemporaryDirectory() as temporary:
+            destination = Path(temporary) / "private" / "keys.json"
+            written = module.write_key_bundle({"/synthetic/contact.db": encryption_key.hex()}, str(destination))
+            payload = json.loads(written.read_text(encoding="utf-8"))
+            self.assertEqual(written.stat().st_mode & 0o777, 0o600)
+            self.assertEqual(written.parent.stat().st_mode & 0o777, 0o700)
+            self.assertNotIn("preview", json.dumps(payload).lower())
+            self.assertEqual(payload["keys"]["/synthetic/contact.db"], encryption_key.hex())
+
+    def test_key_hook_requires_contact_and_message_from_the_same_account(self):
+        module = load_script("wechat-chat-export", "wechat_key_hook.py")
+        root = "/private/xwechat_files"
+        mixed = {
+            f"{root}/account-a/db_storage/contact/contact.db": "a" * 64,
+            f"{root}/account-b/db_storage/message/message_0.db": "b" * 64,
+        }
+        self.assertIsNone(module.ready_account(mixed, root))
+        mixed[f"{root}/account-a/db_storage/message/message_0.db"] = "c" * 64
+        self.assertEqual(module.ready_account(mixed, root), "account-a")
+
     def test_doctor_reports_missing_key_without_attempting_acquisition(self):
         module = load_script("wechat-chat-export", "wechat_export.py")
         result = module.doctor("/path/that/does/not/exist.json")
         self.assertEqual(result["status"], "not_ready")
         self.assertEqual(result["error"]["code"], "missing_key_bundle")
         self.assertFalse(result["capabilities"]["acquireKeys"])
+        self.assertTrue(result["capabilities"]["guidedFirstTimeSetup"])
+        self.assertIn("wechat_setup.py check", result["nextAction"])
 
     def test_doctor_warns_about_stale_optional_paths_but_verifies_core_databases(self):
         module = load_script("wechat-chat-export", "wechat_export.py")
@@ -276,9 +488,33 @@ class ReferenceVideoDeconstructionTests(unittest.TestCase):
             result = module.extract(video, output, max_frames=4)
             self.assertTrue(result["probe"]["hasAudio"])
             self.assertEqual(result["probe"]["width"], 320)
+            self.assertTrue(result["visualSignal"]["visiblePixelRangeDetected"])
+            self.assertTrue(result["audioSignal"]["signalAboveMinus60Db"])
             self.assertGreaterEqual(result["coverage"]["framesExtracted"], 1)
             self.assertLessEqual(result["coverage"]["framesExtracted"], 4)
             self.assertTrue((output / "evidence.json").is_file())
+
+    @unittest.skipUnless(shutil.which("ffmpeg") and shutil.which("ffprobe"), "ffmpeg and ffprobe are required")
+    def test_distinguishes_black_silent_media_from_missing_streams(self):
+        module = load_script("reference-video-deconstruction", "extract_video_evidence.py")
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            video = root / "black-silent.mp4"
+            subprocess.run(
+                [
+                    "ffmpeg", "-hide_banner", "-loglevel", "error",
+                    "-f", "lavfi", "-i", "color=black:size=320x240:rate=24",
+                    "-f", "lavfi", "-i", "anullsrc=channel_layout=mono:sample_rate=48000",
+                    "-t", "1", "-c:v", "libx264", "-pix_fmt", "yuv420p",
+                    "-c:a", "aac", str(video),
+                ],
+                check=True,
+            )
+            result = module.extract(video, root / "evidence", max_frames=4)
+        self.assertTrue(result["probe"]["hasAudio"])
+        self.assertEqual(result["visualSignal"]["blackFrameRatio"], 1.0)
+        self.assertFalse(result["visualSignal"]["visiblePixelRangeDetected"])
+        self.assertFalse(result["audioSignal"]["signalAboveMinus60Db"])
 
     def test_force_refuses_symlinked_frames_directory(self):
         module = load_script("reference-video-deconstruction", "extract_video_evidence.py")
@@ -294,6 +530,13 @@ class ReferenceVideoDeconstructionTests(unittest.TestCase):
 
 
 class CreatorOpportunityRadarTests(unittest.TestCase):
+    def test_non_object_payload_and_non_array_evidence_are_rejected(self):
+        module = load_script("creator-opportunity-radar", "rank_opportunities.py")
+        with self.assertRaisesRegex(ValueError, "JSON object"):
+            module.rank_opportunities([])
+        with self.assertRaisesRegex(ValueError, "evidence must be an array"):
+            module.rank_opportunities({"asOfDate": "2026-08-17", "evidence": {}})
+
     def test_ranking_rewards_independent_evidence(self):
         module = load_script("creator-opportunity-radar", "rank_opportunities.py")
         payload = json.loads((SKILLS / "creator-opportunity-radar" / "evals" / "files" / "opportunities.json").read_text())
@@ -306,14 +549,33 @@ class CreatorOpportunityRadarTests(unittest.TestCase):
         module = load_script("creator-opportunity-radar", "rank_opportunities.py")
         valid = {
             "id": "one", "title": "One", "audienceTension": "A concrete problem", "whyNow": "A dated change",
+            "whyNowDate": "2026-08-16",
             "promise": "A result", "differentiation": "Direct proof", "formatHypothesis": "Short demo",
             "validationAction": "Interview users", "stopCondition": "No repeated need",
             "scores": {"relevance": 3, "timeliness": 3, "evidence": 3, "differentiation": 3, "feasibility": 3},
         }
-        result = module.rank_opportunities({"opportunities": [None, valid, dict(valid)]})
+        result = module.rank_opportunities({"asOfDate": "2026-08-17", "opportunities": [None, valid, dict(valid)]})
         self.assertEqual(len(result["ranked"]), 1)
         self.assertEqual(len(result["rejected"]), 2)
         self.assertIn("duplicate opportunity id", result["rejected"][1]["reason"])
+
+    def test_unknown_evidence_cannot_create_high_confidence(self):
+        module = load_script("creator-opportunity-radar", "rank_opportunities.py")
+        payload = {
+            "asOfDate": "2026-08-17",
+            "evidence": [{"id": "known", "sourceType": "github", "capturedAt": "2026-08-16"}],
+            "opportunities": [{
+                "id": "fabricated", "title": "Fabricated confidence", "audienceTension": "A specific pain",
+                "whyNow": "A current change", "whyNowDate": "2026-08-16", "promise": "A result",
+                "differentiation": "Direct proof", "formatHypothesis": "Demo", "validationAction": "Test",
+                "stopCondition": "No repeated need", "evidenceIds": ["known", "invented-1", "invented-2"],
+                "sourceTypes": ["github", "paper", "community"],
+                "scores": {"relevance": 5, "timeliness": 5, "evidence": 5, "differentiation": 5, "feasibility": 5},
+            }],
+        }
+        result = module.rank_opportunities(payload)
+        self.assertEqual(result["ranked"], [])
+        self.assertIn("unknown evidence ids", result["rejected"][0]["reason"])
 
 
 if __name__ == "__main__":

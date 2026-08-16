@@ -1,14 +1,11 @@
 ---
 name: github-repository-research
 description: Investigate a GitHub repository or local clone and produce an evidence-backed architecture map, maintenance assessment, license/reuse boundary, and answer to a concrete technical question. Use whenever the user asks to inspect, understand, compare, audit, reuse, or learn from a GitHub repo, including “看一下这个仓库”“研究源码”“这个项目怎么实现的”“哪些代码能复用”.
-license: MIT
-compatibility: Requires git for repository history. Public remote research needs network access; local repository analysis works offline with Python 3.9+.
-metadata:
-  author: aqm857886159
-  version: "0.1.0"
 ---
 
 # GitHub Repository Research
+
+Requirements: Git for revision evidence and Python 3.9+ for the snapshot tool. Public remote research needs network access; local analysis works offline.
 
 ## Mission
 

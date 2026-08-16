@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Read-only export for authorized local WeChat 4.x databases on macOS.
 
-This script does not acquire database keys, attach to WeChat, alter the app,
-or upload data. It consumes an existing per-database key bundle and writes a
-bounded JSON export outside Git worktrees with mode 0600.
+This read-only exporter does not attach to WeChat, alter the app, or upload
+data. First-time setup is handled separately by the risk-gated
+``wechat_setup.py`` workflow. This script consumes its verified per-database
+key bundle and writes a bounded JSON export outside Git worktrees with mode
+0600.
 """
 
 from __future__ import annotations
@@ -84,7 +86,7 @@ def _digest(name: str, value: str) -> str:
     return digest.finalize().hex()
 
 
-def _find_key_file(explicit: str | None) -> Path | None:
+def _key_file_candidates(explicit: str | None) -> list[Path]:
     candidates: list[Path] = []
     if explicit:
         candidates.append(Path(explicit).expanduser())
@@ -92,37 +94,40 @@ def _find_key_file(explicit: str | None) -> Path | None:
         candidates.append(Path(os.environ["WECHAT_KEYS_PATH"]).expanduser())
     else:
         candidates.extend(DEFAULT_KEY_FILES)
-    return next((path.resolve() for path in candidates if path.is_file()), None)
+    return [path.resolve() for path in candidates if path.is_file()]
 
 
 def _load_keys(explicit: str | None) -> tuple[Path, dict[Path, str]]:
-    path = _find_key_file(explicit)
-    if path is None:
+    candidates = _key_file_candidates(explicit)
+    if not candidates:
         raise ExportError(
             "missing_key_bundle",
-            "No existing WeChat per-database key bundle was found. Key acquisition is not included.",
+            "No verified WeChat key bundle was found. Run wechat_setup.py check for the risk-gated first-time setup.",
         )
-    try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        raise ExportError("invalid_key_bundle", f"The key bundle is unreadable or invalid JSON: {type(exc).__name__}.") from exc
-    raw_keys = payload.get("keys") if isinstance(payload, dict) else None
-    if not isinstance(raw_keys, dict):
-        raise ExportError("invalid_key_bundle", "The key bundle must contain a keys object.")
-    keys: dict[Path, str] = {}
-    invalid_count = 0
-    for raw_path, raw_key in raw_keys.items():
-        if isinstance(raw_path, str) and isinstance(raw_key, str) and HEX_KEY.fullmatch(raw_key):
-            keys[Path(raw_path).expanduser().resolve()] = raw_key.lower()
-        else:
-            invalid_count += 1
-    if invalid_count or not keys:
-        raise ExportError(
-            "invalid_key_bundle",
-            "The key bundle contains invalid database entries.",
-            {"validEntryCount": len(keys), "invalidEntryCount": invalid_count},
-        )
-    return path, keys
+    failures: list[str] = []
+    for path in candidates:
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            raw_keys = payload.get("keys") if isinstance(payload, dict) else None
+            if not isinstance(raw_keys, dict):
+                raise ValueError("missing keys object")
+            keys: dict[Path, str] = {}
+            invalid_count = 0
+            for raw_path, raw_key in raw_keys.items():
+                if isinstance(raw_path, str) and isinstance(raw_key, str) and HEX_KEY.fullmatch(raw_key):
+                    keys[Path(raw_path).expanduser().resolve()] = raw_key.lower()
+                else:
+                    invalid_count += 1
+            if invalid_count or not keys:
+                raise ValueError(f"valid={len(keys)}, invalid={invalid_count}")
+            return path, keys
+        except (OSError, json.JSONDecodeError, ValueError) as exc:
+            failures.append(type(exc).__name__)
+    raise ExportError(
+        "invalid_key_bundle",
+        "No discovered key bundle contained a valid keys object.",
+        {"candidateCount": len(candidates), "failureTypes": failures},
+    )
 
 
 def _key_mode(path: Path) -> str:
@@ -548,6 +553,8 @@ def doctor(explicit_key_file: str | None) -> dict[str, Any]:
             "exportMediaMetadata": False,
             "decryptMediaFiles": False,
             "acquireKeys": False,
+            "guidedFirstTimeSetup": True,
+            "automaticKeyCapture": False,
         },
         "warnings": [],
     }
@@ -558,7 +565,7 @@ def doctor(explicit_key_file: str | None) -> dict[str, Any]:
         key_path, keys = _load_keys(explicit_key_file)
     except ExportError as exc:
         result["error"] = {"code": exc.code, "message": exc.message}
-        result["nextAction"] = "Provide an existing authorized per-database key bundle with --key-file."
+        result["nextAction"] = "Run wechat_setup.py check, or provide an existing authorized key bundle with --key-file."
         return result
     missing_count = sum(not path.is_file() for path in keys)
     mode = _key_mode(key_path)
