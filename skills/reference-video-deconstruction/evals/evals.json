@@ -1,0 +1,29 @@
+{
+  "skill_name": "reference-video-deconstruction",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "拆解这个本地竖屏参考视频：按时间讲清镜头、声音、花字和叙事作用，然后给我一版原创的 30 秒素材清单。不要上传视频。",
+      "expected_output": "A local-only, timestamped evidence timeline followed by an original 30-second beat and asset plan.",
+      "files": ["evals/files/reference.mp4"],
+      "expectations": [
+        "Probes source metadata and reports bounded extraction coverage",
+        "Separates visual, audio, text, editing, and interpretation lanes",
+        "Does not invent ASR or OCR output when those tools were not run",
+        "Adapts mechanisms without copying source expression"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "我导入的视频在画布上是黑的而且没声音，双击预览却能看到。请用这份本地文件仔细判断问题在哪。",
+      "expected_output": "A staged diagnosis that distinguishes source streams and decode health from application rendering and playback state.",
+      "files": ["evals/files/reference.mp4"],
+      "expectations": [
+        "Checks whether video and audio streams exist before diagnosing",
+        "Uses decoded frame evidence to separate source problems from canvas problems",
+        "Checks mute, readiness, asset delivery, codec, CORS, and draw path as distinct hypotheses",
+        "Does not claim a root cause beyond the evidence"
+      ]
+    }
+  ]
+}

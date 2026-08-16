@@ -1,0 +1,34 @@
+{
+  "skill_name": "github-repository-research",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "看一下这个本地仓库，解释从用户点击导出到最终写出文件的完整调用链。只做只读调研，结论要带文件和行号。",
+      "expected_output": "A revision-pinned call-path investigation with source and test evidence, no repository mutation, and explicit unknowns.",
+      "files": [
+        "evals/files/local-repo/LICENSE",
+        "evals/files/local-repo/README.md",
+        "evals/files/local-repo/package.json",
+        "evals/files/local-repo/src/index.ts",
+        "evals/files/local-repo/tests/index.test.ts"
+      ],
+      "expectations": [
+        "States branch or commit and working-tree condition",
+        "Reads applicable repository instruction files",
+        "Traces an end-to-end call path instead of listing folders",
+        "Supports major claims with file and line evidence"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "研究 https://github.com/example/example 这个项目的检索模块能不能商用复用。重点看真实实现、测试、许可证和依赖，不要只总结 README。",
+      "expected_output": "A reuse-focused repository assessment that checks implementation, tests, package license, coupling, and unresolved legal or technical constraints.",
+      "files": [],
+      "expectations": [
+        "Separates public availability from reuse permission",
+        "Identifies the smallest reusable unit and its dependencies",
+        "Does not claim tests passed unless they were run"
+      ]
+    }
+  ]
+}

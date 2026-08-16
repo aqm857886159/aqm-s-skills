@@ -1,0 +1,35 @@
+{
+  "view": {
+    "code": 0,
+    "data": {
+      "aid": 123456,
+      "bvid": "BV1xx411c7mD",
+      "title": "A useful demo",
+      "desc": "A bounded fixture",
+      "duration": 42,
+      "owner": {"mid": 88, "name": "Fixture UP"},
+      "stat": {"view": 1000, "like": 80, "reply": 2},
+      "pages": [{"cid": 987, "page": 1, "part": "P1", "duration": 42}]
+    }
+  },
+  "player": {
+    "code": 0,
+    "data": {
+      "subtitle": {
+        "subtitles": [{"id": 1, "lan": "zh-CN", "lan_doc": "中文", "subtitle_url": "//example.invalid/subtitle.json"}]
+      }
+    }
+  },
+  "subtitleBodies": {
+    "1": {"body": [{"from": 0.5, "to": 2.0, "content": "第一句字幕"}]}
+  },
+  "comments": {
+    "code": 0,
+    "data": {
+      "replies": [
+        {"rpid": 11, "ctime": 1786800000, "like": 7, "member": {"uname": "Alice"}, "content": {"message": "这个步骤怎么做？"}},
+        {"rpid": 12, "ctime": 1786800100, "like": 2, "member": {"uname": "Bob"}, "content": {"message": "希望补充完整案例"}}
+      ]
+    }
+  }
+}

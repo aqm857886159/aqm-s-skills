@@ -1,0 +1,29 @@
+{
+  "skill_name": "community-feedback-radar",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "把这份 GitHub Issue 导出、B站评论导出和微信群聊导出整理成产品反馈雷达。报告要能给研发排优先级，但不能泄露用户身份，也不要替我发消息。",
+      "expected_output": "A redacted, source-aware radar with coverage, deduplicated evidence, cautious themes, and proposed actions only.",
+      "files": ["evals/files/github.json", "evals/files/bilibili.json"],
+      "expectations": [
+        "States included and missing sources, time windows, and sample counts",
+        "Masks identities and uses stable evidence IDs",
+        "Separates bugs, requests, questions, praise, and noise",
+        "Does not perform or imply external write actions"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "我的历史反馈还在，但微信接入状态没了。是不是历史数据也不可信了？顺便把现有反馈里最重要的问题列出来。",
+      "expected_output": "An answer that separates retained historical evidence from current connector health and limits conclusions to the available snapshot.",
+      "files": [],
+      "expectations": [
+        "Treats retained data and current connection state as separate facts",
+        "Does not discard or silently refresh historical evidence",
+        "Makes freshness and missing-source limitations explicit",
+        "Does not claim the connector is healthy without checking it"
+      ]
+    }
+  ]
+}

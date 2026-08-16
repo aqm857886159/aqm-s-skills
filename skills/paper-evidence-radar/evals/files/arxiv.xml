@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:arxiv="http://arxiv.org/schemas/atom">
+  <entry>
+    <id>https://arxiv.org/abs/2608.12345v2</id>
+    <updated>2026-08-15T10:00:00Z</updated>
+    <published>2026-08-10T09:00:00Z</published>
+    <title>Evidence Grounded Agents for Long Form Video</title>
+    <summary>We introduce an evidence-grounded workflow with a public benchmark.</summary>
+    <author><name>Ada Researcher</name></author>
+    <author><name>Bo Scientist</name></author>
+    <arxiv:primary_category term="cs.CV"/>
+    <category term="cs.CV"/>
+    <link href="https://arxiv.org/pdf/2608.12345v2" rel="related" type="application/pdf"/>
+  </entry>
+</feed>

@@ -1,0 +1,32 @@
+{
+  "opportunities": [
+    {
+      "id": "opp-evidence-rich",
+      "title": "解释为什么导出后没有声音",
+      "audienceTension": "用户能预览，但不理解导出静音的原因",
+      "whyNow": "本周两个独立渠道出现同类问题",
+      "promise": "用可验证的音轨和导出链路证据解释静音问题",
+      "differentiation": "真实探测文件并演示第一处失败，而不是罗列可能原因",
+      "formatHypothesis": "8 分钟教程，包含一次正常和一次失败导出",
+      "validationAction": "先发布一段 45 秒诊断片段并收集具体错误样本",
+      "stopCondition": "无法获得可复现文件或跨来源问题实际不是同一故障",
+      "evidenceIds": ["gh-17", "bili-22", "paper-audio"],
+      "sourceTypes": ["github", "bilibili", "paper"],
+      "scores": {"relevance": 5, "timeliness": 5, "evidence": 5, "differentiation": 3, "feasibility": 5}
+    },
+    {
+      "id": "opp-shallow",
+      "title": "泛泛讨论 AI",
+      "audienceTension": "话题热但问题不具体",
+      "whyNow": "感觉最近很火",
+      "promise": "概览近期 AI 话题",
+      "differentiation": "尚未确定",
+      "formatHypothesis": "短视频",
+      "validationAction": "访谈三名现有受众确认具体问题",
+      "stopCondition": "受众无法说出要解决的具体问题",
+      "evidenceIds": ["one-post"],
+      "sourceTypes": ["social"],
+      "scores": {"relevance": 2, "timeliness": 3, "evidence": 1, "differentiation": 1, "feasibility": 4}
+    }
+  ]
+}

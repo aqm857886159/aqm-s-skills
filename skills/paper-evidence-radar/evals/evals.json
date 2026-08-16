@@ -1,0 +1,28 @@
+{
+  "skill_name": "paper-evidence-radar",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我们在做多镜头 AI 视频工具。请查最近六个月角色一致性和长视频评测论文，不要堆论文，告诉我两件最值得本月验证的事。",
+      "expected_output": "A recent primary-source radar with actionable, architecture, and benchmark lanes plus two bounded next actions.",
+      "files": [],
+      "expectations": [
+        "States the search date window and uses primary paper links",
+        "Separates paper claims from implementation recommendations",
+        "Reports code or reproduction maturity without inventing it",
+        "Ends with no more than two concrete validation actions"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "有人发我一篇 2019 年论文说是现在最强的方法。帮我判断它对当前本地 RAG 项目还有没有价值，必要时找更新工作。",
+      "expected_output": "A verification-oriented answer that treats the old paper as a candidate, checks newer work, and distinguishes foundational value from current SOTA.",
+      "files": [],
+      "expectations": [
+        "Does not accept the SOTA claim without current verification",
+        "Explains whether the older work is foundational, obsolete, or still useful",
+        "Uses a bounded newer-paper comparison rather than a generic literature dump"
+      ]
+    }
+  ]
+}

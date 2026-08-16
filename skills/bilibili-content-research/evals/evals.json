@@ -1,0 +1,29 @@
+{
+  "skill_name": "bilibili-content-research",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "分析这个 B 站视频 BV1xx411c7mD 的前三十秒结构和评论区最真实的三个问题。不要登录，不要下载原视频，也不要把十几条评论说成所有用户。",
+      "expected_output": "A bounded public-evidence analysis with explicit coverage, separate subtitle/comment/visual layers, and audience-sampling caveats.",
+      "files": [],
+      "expectations": [
+        "Records the BV, capture scope, and comment sample limit",
+        "Separates observable structure from audience comments",
+        "Does not use cookies or perform outbound actions",
+        "Does not generalize a small comment sample to the whole audience"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "这个视频接口能拿到标题和播放量，但没有字幕，评论接口也报错。继续帮我总结完整口播并判断为什么爆了。",
+      "expected_output": "An honest partial result that refuses to fabricate missing speech or causal performance claims and proposes a permitted next evidence step.",
+      "files": [],
+      "expectations": [
+        "Makes the subtitle and comment gaps explicit",
+        "Does not reconstruct missing speech",
+        "Does not claim metadata proves why the video performed",
+        "Offers a bounded visual or local-analysis next step"
+      ]
+    }
+  ]
+}

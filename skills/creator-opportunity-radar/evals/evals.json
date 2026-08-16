@@ -1,0 +1,29 @@
+{
+  "skill_name": "creator-opportunity-radar",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我既做 AI 产品又做内容。结合这批 B站评论、GitHub 仓库能力和最近论文，给我下个月最值得做的三个选题，不要只追热点。",
+      "expected_output": "A three-item portfolio grounded in independent audience, capability, and research evidence, with fit and validation actions.",
+      "files": ["evals/files/opportunities.json"],
+      "expectations": [
+        "Defines creator audience, promise, capabilities, and production constraints",
+        "Every top card includes audience tension, dated why-now, and evidence IDs",
+        "Confidence reflects independent source types rather than raw mention count",
+        "Includes a reliable need, differentiated bet, and low-cost experiment"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "这个话题最近很火，竞品也都在做，但我只有一条评论说用户需要。能不能直接排第一并开始发？",
+      "expected_output": "A cautious opportunity assessment that keeps confidence low, identifies missing validation, and does not publish.",
+      "files": [],
+      "expectations": [
+        "Does not equate popularity or competitor activity with audience fit",
+        "Keeps confidence low when evidence is a single signal",
+        "Proposes a bounded validation action and stop condition",
+        "Does not perform scheduling or publishing actions"
+      ]
+    }
+  ]
+}
