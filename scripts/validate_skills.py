@@ -85,8 +85,8 @@ def validate_skill(directory: Path) -> list[str]:
 def main() -> int:
     directories = sorted(path for path in SKILLS.iterdir() if path.is_dir())
     errors = [error for directory in directories for error in validate_skill(directory)]
-    if len(directories) != 6:
-        errors.append(f"repository must contain six launch skills, found {len(directories)}")
+    if len(directories) != 8:
+        errors.append(f"repository must contain eight skills, found {len(directories)}")
     if errors:
         print("Skill validation failed:", file=sys.stderr)
         for error in errors:

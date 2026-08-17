@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "source": "wechat-local",
+  "exportedAt": "2026-08-18T01:12:00Z",
+  "conversation": {
+    "name": "老客户VIP群",
+    "conversationId": "demo-conv-c3"
+  },
+  "coverage": {
+    "since": "2026-08-10T16:00:00Z",
+    "until": "2026-08-17T15:59:59Z",
+    "requestedLimit": 5000,
+    "availableCount": 20,
+    "exportedCount": 20,
+    "truncated": false,
+    "messageDatabasesScanned": 1,
+    "messageTablesMatched": 1,
+    "decodeFailures": 0
+  },
+  "privacy": {
+    "authorsRedacted": false,
+    "databasePathsIncluded": false,
+    "mediaKeysIncluded": false,
+    "uploaded": false
+  },
+  "capabilities": {
+    "mediaMetadata": true,
+    "mediaFileDecryption": false
+  },
+  "warnings": [],
+  "messages": [
+    {
+      "id": "wechat-d45e5c1cdef508c0",
+      "sourceId": "1000",
+      "type": "text",
+      "author": "芳姐",
+      "text": "VIP群的老朋友们，本周三阳光玫瑰，周五奉化水蜜桃，老规矩群里下单九五折",
+      "createdAt": "2026-08-11T02:00:00Z"
+    },
+    {
+      "id": "wechat-3abaad566b61e0af",
+      "sourceId": "1001",
+      "type": "text",
+      "author": "周姐",
+      "text": "葡萄2斤桃子一箱，老地址",
+      "createdAt": "2026-08-11T02:05:00Z"
+    },
+    {
+      "id": "wechat-faf32bc72e579d74",
+      "sourceId": "1002",
+      "type": "text",
+      "author": "芳姐",
+      "text": "收到周姐",
+      "createdAt": "2026-08-11T02:06:00Z"
+    },
+    {
+      "id": "wechat-80f3f5ed34281fe1",
+      "sourceId": "1003",
+      "type": "text",
+      "author": "小赵",
+      "text": "荔枝还有吗？想买点给爸妈",
+      "createdAt": "2026-08-12T03:15:00Z"
+    },
+    {
+      "id": "wechat-51c20b0f27c7f113",
+      "sourceId": "1004",
+      "type": "text",
+      "author": "芳姐",
+      "text": "挂绿下市了，妃子笑明天还能到一件，给您留？",
+      "createdAt": "2026-08-12T03:30:00Z"
+    },
+    {
+      "id": "wechat-e7e2abf878a80e5e",
+      "sourceId": "1005",
+      "type": "text",
+      "author": "小赵",
+      "text": "留！",
+      "createdAt": "2026-08-12T03:32:00Z"
+    },
+    {
+      "id": "wechat-0414048f87a4e656",
+      "sourceId": "1006",
+      "type": "link",
+      "author": "何总",
+      "text": "[link] 办公室水果采购需求清单",
+      "createdAt": "2026-08-13T01:44:00Z"
+    },
+    {
+      "id": "wechat-365f7ae5c14d447e",
+      "sourceId": "1007",
+      "type": "text",
+      "author": "何总",
+      "text": "芳姐，我们行政让我问问，每周固定送两次办公室水果能做吗",
+      "createdAt": "2026-08-13T01:50:00Z"
+    },
+    {
+      "id": "wechat-62238f6862da97d9",
+      "sourceId": "1008",
+      "type": "text",
+      "author": "芳姐",
+      "text": "能做能做何总，我下午给您报个方案",
+      "createdAt": "2026-08-13T02:20:00Z"
+    },
+    {
+      "id": "wechat-84d7df381ded1bba",
+      "sourceId": "1009",
+      "type": "text",
+      "author": "芳姐",
+      "text": "@何总 方案发您微信了，您过目",
+      "createdAt": "2026-08-13T07:05:00Z"
+    },
+    {
+      "id": "wechat-a94d1f5847a8a789",
+      "sourceId": "1010",
+      "type": "text",
+      "author": "何总",
+      "text": "收到，我转给行政",
+      "createdAt": "2026-08-13T07:30:00Z"
+    },
+    {
+      "id": "wechat-566833430adfb253",
+      "sourceId": "1011",
+      "type": "text",
+      "author": "Amy",
+      "text": "你们能开发票吗？公司下午茶想在你这儿订水果",
+      "createdAt": "2026-08-14T06:22:00Z"
+    },
+    {
+      "id": "wechat-e7a63860544ef0c5",
+      "sourceId": "1012",
+      "type": "text",
+      "author": "周姐",
+      "text": "桃子明天到了先给我送，上午家里有人",
+      "createdAt": "2026-08-14T12:11:00Z"
+    },
+    {
+      "id": "wechat-9b0ef17fefc3d68e",
+      "sourceId": "1013",
+      "type": "text",
+      "author": "芳姐",
+      "text": "好的周姐，上午第一批就送您家",
+      "createdAt": "2026-08-15T01:00:00Z"
+    },
+    {
+      "id": "wechat-dd1516da33c5f4d4",
+      "sourceId": "1014",
+      "type": "text",
+      "author": "小赵",
+      "text": "妃子笑收到，我妈说很新鲜，谢谢",
+      "createdAt": "2026-08-15T04:40:00Z"
+    },
+    {
+      "id": "wechat-613047c95526963d",
+      "sourceId": "1015",
+      "type": "quote",
+      "author": "芳姐",
+      "text": "[quote] 妃子笑收到，我妈说很新鲜 | 阿姨喜欢就好",
+      "createdAt": "2026-08-15T04:45:00Z"
+    },
+    {
+      "id": "wechat-895e70533654e8cf",
+      "sourceId": "1016",
+      "type": "image",
+      "author": "楠楠",
+      "text": "[image]",
+      "createdAt": "2026-08-16T08:08:00Z",
+      "media": {
+        "mediaId": "fe3df6dc8b81a341a32e8986e9894222"
+      }
+    },
+    {
+      "id": "wechat-5c6b3772918d7a81",
+      "sourceId": "1017",
+      "type": "text",
+      "author": "楠楠",
+      "text": "朋友公司发的中秋果篮，你们做这种吗",
+      "createdAt": "2026-08-16T08:09:00Z"
+    },
+    {
+      "id": "wechat-1b520dfb8569b020",
+      "sourceId": "1018",
+      "type": "text",
+      "author": "楠楠",
+      "text": "中秋礼盒开始订了吗？我们部门想订20盒，预算100左右一盒",
+      "createdAt": "2026-08-17T13:47:00Z"
+    },
+    {
+      "id": "wechat-e2687133dff20bf3",
+      "sourceId": "1019",
+      "type": "text",
+      "author": "周姐",
+      "text": "礼盒我也想看看",
+      "createdAt": "2026-08-17T13:50:00Z"
+    }
+  ]
+}

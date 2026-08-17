@@ -1,0 +1,4 @@
+interface:
+  display_name: "WeChat Group Insights"
+  short_description: "Weekly customer-group report from private exports"
+  default_prompt: "Use $wechat-group-insights to turn my exported WeChat group records into this week's evidence-verified 客户群经营周报."

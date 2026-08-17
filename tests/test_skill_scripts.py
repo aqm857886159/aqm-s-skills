@@ -578,5 +578,107 @@ class CreatorOpportunityRadarTests(unittest.TestCase):
         self.assertIn("unknown evidence ids", result["rejected"][0]["reason"])
 
 
+class WeChatGroupInsightsTests(unittest.TestCase):
+    EXPORTS = sorted((SKILLS / "wechat-group-insights" / "evals" / "files" / "exports").glob("*.json"))
+    INSIGHTS = SKILLS / "wechat-group-insights" / "evals" / "files" / "insights.json"
+
+    def _stats(self, temporary: Path) -> Path:
+        module = load_script("wechat-group-insights", "group_stats.py")
+        output = temporary / "stats.json"
+        code = module.main([*(str(path) for path in self.EXPORTS), "--output", str(output)])
+        self.assertEqual(code, 0)
+        return output
+
+    def test_stats_are_objective_and_group_scoped(self):
+        with tempfile.TemporaryDirectory() as name:
+            stats = json.loads(self._stats(Path(name)).read_text())
+        self.assertEqual(stats["totals"]["groupCount"], 3)
+        self.assertEqual(stats["totals"]["messageCount"], sum(group["messageCount"] for group in stats["groups"]))
+        vip = next(group for group in stats["groups"] if group["group"] == "老客户VIP群")
+        self.assertGreater(vip["questionLikeCount"], 0)
+        self.assertTrue(all("count" in day and "date" in day for day in vip["perDay"]))
+
+    def test_render_verifies_every_cited_evidence_id(self):
+        module = load_script("wechat-group-insights", "render_report.py")
+        with tempfile.TemporaryDirectory() as name:
+            temporary = Path(name)
+            stats = self._stats(temporary)
+            output = temporary / "report.html"
+            code = module.main([
+                "--insights", str(self.INSIGHTS), "--stats", str(stats),
+                "--exports", *(str(path) for path in self.EXPORTS),
+                "--output", str(output), "--generated-at", "2026-08-18T09:30:00+08:00",
+                "--allow-inside-git", "--force",
+            ])
+            self.assertEqual(code, 0)
+            html = output.read_text()
+        insights = json.loads(self.INSIGHTS.read_text())
+        cited = module.collect_citations(insights)
+        self.assertTrue(cited)
+        for evidence_id in cited:
+            self.assertIn(evidence_id, html)
+        self.assertIn("证据校验", html)
+
+    def test_unknown_evidence_id_aborts_render(self):
+        module = load_script("wechat-group-insights", "render_report.py")
+        insights = json.loads(self.INSIGHTS.read_text())
+        insights["risks"][0]["evidence"] = ["wechat-does-not-exist"]
+        with tempfile.TemporaryDirectory() as name:
+            temporary = Path(name)
+            stats = self._stats(temporary)
+            bad = temporary / "insights.json"
+            bad.write_text(json.dumps(insights, ensure_ascii=False), encoding="utf-8")
+            output = temporary / "report.html"
+            code = module.main([
+                "--insights", str(bad), "--stats", str(stats),
+                "--exports", *(str(path) for path in self.EXPORTS),
+                "--output", str(output), "--allow-inside-git", "--force",
+            ])
+            self.assertEqual(code, 2)
+            self.assertFalse(output.exists())
+
+    def test_render_refuses_git_worktree_without_demo_flag(self):
+        module = load_script("wechat-group-insights", "render_report.py")
+        with self.assertRaises(module.RenderError) as caught:
+            module.write_private_html(ROOT / "reports" / "r.html", "<html></html>", force=True, allow_inside_git=False)
+        self.assertEqual(caught.exception.code, "unsafe_output")
+
+    def test_waiting_badge_and_quotes_come_from_export_not_model(self):
+        module = load_script("wechat-group-insights", "render_report.py")
+        with tempfile.TemporaryDirectory() as name:
+            temporary = Path(name)
+            stats = self._stats(temporary)
+            output = temporary / "report.html"
+            module.main([
+                "--insights", str(self.INSIGHTS), "--stats", str(stats),
+                "--exports", *(str(path) for path in self.EXPORTS),
+                "--output", str(output), "--generated-at", "2026-08-18T09:30:00+08:00",
+                "--allow-inside-git", "--force",
+            ])
+            html = output.read_text()
+        # The complaint first appears 2026-08-16; the report is generated 08-18 → "已等 2 天".
+        self.assertIn("已等 2 天", html)
+        self.assertIn("昨天的水蜜桃有两个是坏的", html)
+
+
+class WeChatFollowupAssistTests(unittest.TestCase):
+    SKILL = SKILLS / "wechat-followup-assist"
+
+    def test_skill_defaults_to_paste_first_and_forbids_broadcast(self):
+        body = (self.SKILL / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("放入输入框（默认）", body)
+        self.assertIn("发到我所有群", body)
+        self.assertRegex(body, r"10 messages per run")
+        self.assertIn("Clipboard fallback", body)
+
+    def test_followup_fixture_matches_report_replies(self):
+        followups = json.loads((self.SKILL / "evals" / "files" / "followups.json").read_text())
+        insights = json.loads((SKILLS / "wechat-group-insights" / "evals" / "files" / "insights.json").read_text())
+        report_replies = {item["suggestedReply"] for item in insights["followups"]}
+        self.assertTrue(followups["followups"])
+        for item in followups["followups"]:
+            self.assertIn(item["suggestedReply"], report_replies)
+
+
 if __name__ == "__main__":
     unittest.main()

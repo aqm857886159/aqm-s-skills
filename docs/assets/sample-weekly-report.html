@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>客户群经营周报 · 2026年8月11日 — 8月17日</title>
+<style>
+:root {
+  --paper: #FDFDFB; --ink: #1F2823; --muted: #66716A; --line: #E3E6E1; --soft: #F4F6F3;
+  --green: #0E7A45; --green-bright: #07C160; --green-bg: #EDF6F0;
+  --amber: #A9741B; --amber-bg: #FBF4E4;
+  --red: #B8402C; --red-bg: #F9EDE9;
+  --serif: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--sans); font-size: 15px; line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+.sheet { max-width: 860px; margin: 0 auto; padding: 40px 48px 64px; }
+a { color: var(--green); }
+button { font-family: var(--sans); }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+
+/* ---- masthead ---- */
+.mast-top { display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  font-size: 12.5px; color: var(--muted); letter-spacing: .04em; }
+.mast-top .shop { font-weight: 600; color: var(--ink); }
+.badge-local { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.badge-local::before { content: ""; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green-bright); box-shadow: 0 0 0 3px var(--green-bg); }
+h1 { font-family: var(--serif); font-weight: 900; font-size: 42px; letter-spacing: .06em;
+  margin: 18px 0 4px; }
+.mast-sub { display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  color: var(--muted); font-size: 13.5px; }
+.mast-sub .period { font-family: var(--mono); letter-spacing: .02em; }
+.rule-double { border: 0; border-top: 3px solid var(--ink); margin: 18px 0 0; }
+.rule-double + hr { border: 0; border-top: 1px solid var(--ink); margin: 3px 0 0; }
+
+/* ---- headline ---- */
+.headline { margin: 34px 0 0; }
+.eyebrow { font-size: 12px; letter-spacing: .18em; color: var(--muted); margin-bottom: 8px; }
+.eyebrow b { color: var(--green); font-weight: 600; }
+.headline p { font-family: var(--serif); font-size: 21px; line-height: 1.75; margin: 0;
+  font-weight: 600; }
+
+/* ---- KPI ---- */
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); margin: 34px 0 0;
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.kpi { padding: 18px 18px 16px; border-left: 1px solid var(--line); }
+.kpi:first-child { border-left: 0; padding-left: 0; }
+.kpi .num { font-family: var(--serif); font-size: 40px; font-weight: 900; line-height: 1;
+  font-variant-numeric: tabular-nums; }
+.kpi .lbl { font-size: 13.5px; font-weight: 600; margin-top: 6px; }
+.kpi .note { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.kpi-amber .num { color: var(--amber); } .kpi-green .num { color: var(--green); }
+.kpi-red .num { color: var(--red); } .kpi-ink .num { color: var(--ink); }
+
+/* ---- sections ---- */
+section { margin-top: 44px; }
+.sec-head { display: flex; align-items: baseline; gap: 10px; border-bottom: 1px solid var(--line);
+  padding-bottom: 8px; margin-bottom: 4px; }
+.sec-no { font-family: var(--serif); font-size: 13px; color: var(--muted); letter-spacing: .1em; }
+.sec-head h2 { font-family: var(--serif); font-size: 20px; font-weight: 900; margin: 0; letter-spacing: .04em; }
+.sec-head .count { margin-left: auto; font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.sec-mark { width: 9px; height: 9px; border-radius: 2px; align-self: center; }
+.mark-amber { background: var(--amber); } .mark-green { background: var(--green); } .mark-red { background: var(--red); }
+
+/* ---- followup cards ---- */
+.card { display: grid; grid-template-columns: 44px 1fr; gap: 0 16px;
+  padding: 22px 0 24px; border-bottom: 1px solid var(--line); }
+.card:last-child { border-bottom: 0; }
+.card .rank { font-family: var(--serif); font-size: 30px; font-weight: 900; color: #B9C2BA;
+  line-height: 1.15; text-align: center; }
+.card.is-done { opacity: .45; }
+.card.is-done .card-title { text-decoration: line-through; }
+.card-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.card-title { font-size: 16.5px; font-weight: 700; }
+.chip { font-size: 11.5px; font-weight: 600; padding: 1.5px 8px; border-radius: 100px; white-space: nowrap; }
+.chip-intent { color: var(--green); background: var(--green-bg); }
+.chip-question { color: var(--amber); background: var(--amber-bg); }
+.chip-risk { color: var(--red); background: var(--red-bg); }
+.chip-wait { font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+  border: 1px solid var(--line); padding: 1px 7px; border-radius: 100px; white-space: nowrap; }
+.done-toggle { margin-left: auto; display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12.5px; color: var(--muted); cursor: pointer; user-select: none; white-space: nowrap; }
+.card-meta { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.card-meta b { color: var(--ink); font-weight: 600; }
+.card-reason { margin: 8px 0 0; }
+
+/* ---- evidence ---- */
+.evidence { margin: 12px 0 0; padding: 10px 14px 9px; border-left: 3px solid var(--line);
+  background: var(--soft); border-radius: 0 6px 6px 0; }
+.evidence-amber { border-left-color: var(--amber); }
+.evidence-green { border-left-color: var(--green); }
+.evidence-red { border-left-color: var(--red); }
+.evidence blockquote { margin: 0; font-size: 14px; white-space: pre-line; }
+.evidence blockquote::before { content: "“"; color: var(--muted); }
+.evidence blockquote::after { content: "”"; color: var(--muted); }
+.evidence figcaption { display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
+  margin-top: 6px; font-size: 12px; color: var(--muted); }
+.ev-who { font-weight: 600; color: var(--ink); }
+.ev-time, .ev-id { font-family: var(--mono); }
+.ev-id { font-size: 10.5px; opacity: .55; }
+.ev-sep { opacity: .5; }
+.ctx-toggle { margin-left: auto; border: 0; background: none; color: var(--green);
+  font-size: 12px; cursor: pointer; padding: 0; }
+.ctx { margin-top: 8px; border-top: 1px dashed var(--line); padding-top: 8px; }
+.ctx-row { display: flex; gap: 8px; font-size: 12.5px; padding: 2.5px 6px; border-radius: 4px; }
+.ctx-row.ctx-hit { background: rgba(7,193,96,.10); }
+.ctx-time { font-family: var(--mono); color: var(--muted); white-space: nowrap; font-size: 11px; padding-top: 2px; }
+.ctx-author { font-weight: 600; white-space: nowrap; }
+.ctx-text { color: var(--ink); white-space: pre-line; overflow-wrap: anywhere; }
+
+/* ---- suggested reply ---- */
+.reply { display: flex; gap: 12px; align-items: flex-start; margin-top: 12px;
+  padding: 12px 14px; background: var(--green-bg); border-radius: 8px; }
+.reply .r-label { font-size: 11.5px; font-weight: 600; color: var(--green); white-space: nowrap;
+  letter-spacing: .08em; padding-top: 2px; }
+.reply .r-text { flex: 1; font-size: 14px; }
+.copy-btn { border: 1px solid rgba(14,122,69,.35); color: var(--green); background: #fff;
+  font-size: 12.5px; padding: 4px 12px; border-radius: 6px; cursor: pointer; white-space: nowrap; }
+.copy-btn:hover { background: var(--green); color: #fff; }
+.copy-btn.copied { background: var(--green); color: #fff; }
+
+/* ---- list rows ---- */
+.rows { margin: 0; }
+.row { display: grid; grid-template-columns: 1fr auto; gap: 2px 14px; padding: 13px 0 14px;
+  border-bottom: 1px solid var(--line); }
+.row:last-child { border-bottom: 0; }
+.row-main { font-size: 14.5px; }
+.row-main b { font-weight: 700; }
+.row-meta { font-size: 12.5px; color: var(--muted); }
+.row-side { text-align: right; align-self: start; }
+.row .evidence { grid-column: 1 / -1; }
+.sev { font-size: 11.5px; font-weight: 600; padding: 1.5px 8px; border-radius: 100px; }
+.sev-high { color: var(--red); background: var(--red-bg); }
+.sev-low { color: var(--muted); background: var(--soft); }
+.sev-medium { color: var(--amber); background: var(--amber-bg); }
+.estimate { font-family: var(--mono); font-size: 12px; color: var(--green); white-space: nowrap; }
+
+/* ---- groups ---- */
+.group-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 20px;
+  padding: 15px 0; border-bottom: 1px solid var(--line); align-items: center; }
+.group-row:last-child { border-bottom: 0; }
+.group-name { font-weight: 700; font-size: 15px; }
+.group-stats { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.group-note { grid-column: 1; font-size: 13.5px; color: var(--ink); margin: 0; }
+.spark { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+.spark .axis { font-size: 8.5px; fill: var(--muted); font-family: var(--sans); }
+
+/* ---- coverage ---- */
+.coverage { background: var(--soft); border-radius: 10px; padding: 20px 24px; font-size: 13.5px; }
+.coverage dl { display: grid; grid-template-columns: 108px 1fr; gap: 5px 16px; margin: 0; }
+.coverage dt { color: var(--muted); }
+.coverage dd { margin: 0; }
+.coverage ul { margin: 4px 0 0; padding-left: 18px; }
+.coverage li { margin-top: 3px; }
+
+/* ---- footer ---- */
+footer { margin-top: 44px; border-top: 1px solid var(--line); padding-top: 14px;
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  font-size: 12.5px; color: var(--muted); }
+.ev-check { display: inline-flex; align-items: center; gap: 6px; }
+.ev-check::before { content: "✓"; color: var(--green); font-weight: 700; }
+
+@media (max-width: 700px) {
+  .sheet { padding: 24px 20px 48px; }
+  h1 { font-size: 30px; }
+  .kpis { grid-template-columns: 1fr 1fr; }
+  .kpi { padding: 14px; border-top: 1px solid var(--line); }
+  .kpi:nth-child(-n+2) { border-top: 0; }
+  .kpi:nth-child(odd) { border-left: 0; padding-left: 0; }
+  .card { grid-template-columns: 1fr; }
+  .card .rank { display: none; }
+}
+@media print {
+  .ctx-toggle, .copy-btn, .done-toggle { display: none !important; }
+  .sheet { max-width: none; padding: 0; }
+  body { font-size: 12.5px; }
+  section, .card { break-inside: avoid; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .copy-btn { transition: background .15s ease, color .15s ease; }
+}
+</style>
+</head>
+<body data-report-key="2026-08-11~2026-08-17">
+<div class="sheet">
+
+<header>
+  <div class="mast-top">
+    <span class="shop">鲜丰水果·幸福里店</span>
+    <span class="badge-local">本地生成 · 数据未离开这台电脑</span>
+  </div>
+  <h1>客户群经营周报</h1>
+  <div class="mast-sub">
+    <span>覆盖 3 个群 · 93 条消息</span>
+    <span class="period">2026年8月11日 — 8月17日</span>
+  </div>
+  <hr class="rule-double"><hr>
+</header>
+
+<div class="headline">
+  <div class="eyebrow"><b>壹</b> ｜ 本周结论</div>
+  <p>三个群一周 93 条消息，大部分订单都接住了；但有 6 条客户提问无人回应——其中两条来自最安静的 VIP 群，合计约两千元的企业订单正在等回复。</p>
+</div>
+
+<div class="kpis">
+  <div class="kpi kpi-amber"><div class="num">6</div><div class="lbl">未回复的客户提问</div><div class="note">最久已等 5 天</div></div>
+  <div class="kpi kpi-green"><div class="num">5</div><div class="lbl">购买意向线索</div><div class="note">2 条备注了金额</div></div>
+  <div class="kpi kpi-red"><div class="num">2</div><div class="lbl">风险与投诉</div><div class="note">1 条未处理</div></div>
+  <div class="kpi kpi-ink"><div class="num">5</div><div class="lbl">建议今天跟进</div><div class="note">每条附建议话术</div></div>
+</div>
+
+<section>
+  <div class="sec-head"><span class="sec-no">贰</span><h2>本周最该做的 5 件事</h2><span class="count">按优先级排列</span></div>
+  <article class="card"><div class="rank">1</div><div><div class="card-head"><span class="card-title">中秋礼盒 20 盒的企业订单在等报价</span><span class="chip chip-intent">意向</span><span class="chip-wait">已等 2 天</span><label class="done-toggle"><input type="checkbox" data-key="followup-1">已跟进</label></div><div class="card-meta"><b>楠楠</b> · 老客户VIP群</div><p class="card-reason">周日先问了果篮，周一晚追问礼盒，20 盒 × 100 元约两千元，且周姐也在等礼盒信息。中秋档期临近，报价晚一天就少一分胜算。</p><figure class="evidence evidence-green"><blockquote>中秋礼盒开始订了吗？我们部门想订20盒，预算100左右一盒</blockquote><figcaption><span class="ev-who">楠楠</span><span class="ev-sep">·</span><span class="ev-time">8月17日 周一 21:47</span><span class="ev-sep">·</span><span class="ev-group">老客户VIP群</span><code class="ev-id">wechat-1b520dfb8569b020</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月16日 周日 16:08</span><span class="ctx-author">楠楠</span><span class="ctx-text">[image]</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 16:09</span><span class="ctx-author">楠楠</span><span class="ctx-text">朋友公司发的中秋果篮，你们做这种吗</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月17日 周一 21:47</span><span class="ctx-author">楠楠</span><span class="ctx-text">中秋礼盒开始订了吗？我们部门想订20盒，预算100左右一盒</span></div><div class="ctx-row"><span class="ctx-time">8月17日 周一 21:50</span><span class="ctx-author">周姐</span><span class="ctx-text">礼盒我也想看看</span></div></div></figure><figure class="evidence evidence-green"><blockquote>朋友公司发的中秋果篮，你们做这种吗</blockquote><figcaption><span class="ev-who">楠楠</span><span class="ev-sep">·</span><span class="ev-time">8月16日 周日 16:09</span><span class="ev-sep">·</span><span class="ev-group">老客户VIP群</span><code class="ev-id">wechat-5c6b3772918d7a81</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月15日 周六 12:45</span><span class="ctx-author">芳姐</span><span class="ctx-text">[quote] 妃子笑收到，我妈说很新鲜 | 阿姨喜欢就好</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 16:08</span><span class="ctx-author">楠楠</span><span class="ctx-text">[image]</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月16日 周日 16:09</span><span class="ctx-author">楠楠</span><span class="ctx-text">朋友公司发的中秋果篮，你们做这种吗</span></div><div class="ctx-row"><span class="ctx-time">8月17日 周一 21:47</span><span class="ctx-author">楠楠</span><span class="ctx-text">中秋礼盒开始订了吗？我们部门想订20盒，预算100左右一盒</span></div><div class="ctx-row"><span class="ctx-time">8月17日 周一 21:50</span><span class="ctx-author">周姐</span><span class="ctx-text">礼盒我也想看看</span></div></div></figure><figure class="evidence evidence-green"><blockquote>礼盒我也想看看</blockquote><figcaption><span class="ev-who">周姐</span><span class="ev-sep">·</span><span class="ev-time">8月17日 周一 21:50</span><span class="ev-sep">·</span><span class="ev-group">老客户VIP群</span><code class="ev-id">wechat-e2687133dff20bf3</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月16日 周日 16:09</span><span class="ctx-author">楠楠</span><span class="ctx-text">朋友公司发的中秋果篮，你们做这种吗</span></div><div class="ctx-row"><span class="ctx-time">8月17日 周一 21:47</span><span class="ctx-author">楠楠</span><span class="ctx-text">中秋礼盒开始订了吗？我们部门想订20盒，预算100左右一盒</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月17日 周一 21:50</span><span class="ctx-author">周姐</span><span class="ctx-text">礼盒我也想看看</span></div></div></figure><div class="reply"><span class="r-label">建议回复</span><span class="r-text">楠楠早！中秋礼盒这两天刚定档，有 88/108/128 三档，100 左右这档是 8 种当季果加礼袋，订 20 盒可以按团购价再让一点，部门采购能开发票。我今天把图册和报价发您——也发群里给周姐一起看哈。</span><button type="button" class="copy-btn" data-copy="楠楠早！中秋礼盒这两天刚定档，有 88/108/128 三档，100 左右这档是 8 种当季果加礼袋，订 20 盒可以按团购价再让一点，部门采购能开发票。我今天把图册和报价发您——也发群里给周姐一起看哈。">复制话术</button></div></div></article><article class="card"><div class="rank">2</div><div><div class="card-head"><span class="card-title">坏果投诉拖了两天，追问一次仍没人回</span><span class="chip chip-risk">风险</span><span class="chip-wait">已等 2 天</span><label class="done-toggle"><input type="checkbox" data-key="followup-2">已跟进</label></div><div class="card-meta"><b>302王阿姨</b> · 幸福里1号院团购群</div><p class="card-reason">周日提出投诉、周一追问，是本周唯一未处理的投诉。老客户当众投诉无回应，影响的不只是她一单。</p><figure class="evidence evidence-red"><blockquote>芳姐 昨天的水蜜桃有两个是坏的，你看怎么说</blockquote><figcaption><span class="ev-who">302王阿姨</span><span class="ev-sep">·</span><span class="ev-time">8月16日 周日 09:35</span><span class="ev-sep">·</span><span class="ev-group">幸福里1号院团购群</span><code class="ev-id">wechat-5a450df6e477a7a1</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月15日 周六 13:41</span><span class="ctx-author">李姐</span><span class="ctx-text">[image]</span></div><div class="ctx-row"><span class="ctx-time">8月15日 周六 17:55</span><span class="ctx-author">赵哥</span><span class="ctx-text">瓜收到，谢谢留货</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月16日 周日 09:35</span><span class="ctx-author">302王阿姨</span><span class="ctx-text">芳姐 昨天的水蜜桃有两个是坏的，你看怎么说</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 11:00</span><span class="ctx-author">佳佳妈</span><span class="ctx-text">对了葡萄的事看到回我一下哈</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 21:14</span><span class="ctx-author">小美</span><span class="ctx-text">芳姐明天还开门吗</span></div></div></figure><figure class="evidence evidence-red"><blockquote>芳姐看到消息了吗？桃子坏果的事</blockquote><figcaption><span class="ev-who">302王阿姨</span><span class="ev-sep">·</span><span class="ev-time">8月17日 周一 10:05</span><span class="ev-sep">·</span><span class="ev-group">幸福里1号院团购群</span><code class="ev-id">wechat-558ac353ef38796c</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月16日 周日 21:14</span><span class="ctx-author">小美</span><span class="ctx-text">芳姐明天还开门吗</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 21:40</span><span class="ctx-author">芳姐</span><span class="ctx-text">开的，上午都在</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月17日 周一 10:05</span><span class="ctx-author">302王阿姨</span><span class="ctx-text">芳姐看到消息了吗？桃子坏果的事</span></div><div class="ctx-row"><span class="ctx-time">8月17日 周一 11:30</span><span class="ctx-author">刘婶</span><span class="ctx-text">[voice]</span></div><div class="ctx-row"><span class="ctx-time">8月17日 周一 14:00</span><span class="ctx-author">芳姐</span><span class="ctx-text">下周团购预告明天发，这周谢谢大家支持</span></div></div></figure><div class="reply"><span class="r-label">建议回复</span><span class="r-text">王阿姨实在不好意思！这两天到货多、群里消息刷得快，漏看了您的消息。坏的两个桃子我给您退款，或者下次补两个大的，您看哪个方便？给您添麻烦了。</span><button type="button" class="copy-btn" data-copy="王阿姨实在不好意思！这两天到货多、群里消息刷得快，漏看了您的消息。坏的两个桃子我给您退款，或者下次补两个大的，您看哪个方便？给您添麻烦了。">复制话术</button></div></div></article><article class="card"><div class="rank">3</div><div><div class="card-head"><span class="card-title">公司下午茶订单，就卡在“能不能开发票”</span><span class="chip chip-intent">意向</span><span class="chip-wait">已等 4 天</span><label class="done-toggle"><input type="checkbox" data-key="followup-3">已跟进</label></div><div class="card-meta"><b>Amy</b> · 老客户VIP群</div><p class="card-reason">发票的事周五问的，一直没有回音。企业客户问发票通常意味着采购流程已经启动，是长期周期性订单的信号。</p><figure class="evidence evidence-green"><blockquote>你们能开发票吗？公司下午茶想在你这儿订水果</blockquote><figcaption><span class="ev-who">Amy</span><span class="ev-sep">·</span><span class="ev-time">8月14日 周五 14:22</span><span class="ev-sep">·</span><span class="ev-group">老客户VIP群</span><code class="ev-id">wechat-566833430adfb253</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月13日 周四 15:05</span><span class="ctx-author">芳姐</span><span class="ctx-text">@何总 方案发您微信了，您过目</span></div><div class="ctx-row"><span class="ctx-time">8月13日 周四 15:30</span><span class="ctx-author">何总</span><span class="ctx-text">收到，我转给行政</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月14日 周五 14:22</span><span class="ctx-author">Amy</span><span class="ctx-text">你们能开发票吗？公司下午茶想在你这儿订水果</span></div><div class="ctx-row"><span class="ctx-time">8月14日 周五 20:11</span><span class="ctx-author">周姐</span><span class="ctx-text">桃子明天到了先给我送，上午家里有人</span></div><div class="ctx-row"><span class="ctx-time">8月15日 周六 09:00</span><span class="ctx-author">芳姐</span><span class="ctx-text">好的周姐，上午第一批就送您家</span></div></div></figure><div class="reply"><span class="r-label">建议回复</span><span class="r-text">Amy 您好！可以开电子普票的。公司下午茶我们有按周配送的方案，人数和预算发我，我出一份报价单您带给行政？</span><button type="button" class="copy-btn" data-copy="Amy 您好！可以开电子普票的。公司下午茶我们有按周配送的方案，人数和预算发我，我出一份报价单您带给行政？">复制话术</button></div></div></article><article class="card"><div class="rank">4</div><div><div class="card-head"><span class="card-title">冬枣询价四天没回，人家已经说了要五斤</span><span class="chip chip-question">提问</span><span class="chip-wait">已等 4 天</span><label class="done-toggle"><input type="checkbox" data-key="followup-4">已跟进</label></div><div class="card-meta"><b>张叔</b> · 幸福里2号院团购群</div><p class="card-reason">8/11 问过一次冬枣、8/14 直接报了量，是明确的预订单。价格没出也应该先接住。</p><figure class="evidence evidence-amber"><blockquote>冬枣什么价？到时候给我来五斤</blockquote><figcaption><span class="ev-who">张叔</span><span class="ev-sep">·</span><span class="ev-time">8月14日 周五 09:26</span><span class="ev-sep">·</span><span class="ev-group">幸福里2号院团购群</span><code class="ev-id">wechat-a85702350e12d50d</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月13日 周四 10:15</span><span class="ctx-author">芳姐</span><span class="ctx-text">今早已经开始送了，下午到您那栋</span></div><div class="ctx-row"><span class="ctx-time">8月13日 周四 18:40</span><span class="ctx-author">桂芳</span><span class="ctx-text">收到，味道可以</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月14日 周五 09:26</span><span class="ctx-author">张叔</span><span class="ctx-text">冬枣什么价？到时候给我来五斤</span></div><div class="ctx-row"><span class="ctx-time">8月14日 周五 12:00</span><span class="ctx-author">芳姐</span><span class="ctx-text">明天桃子、麒麟瓜和榴莲到店</span></div><div class="ctx-row"><span class="ctx-time">8月14日 周五 12:10</span><span class="ctx-author">敏敏</span><span class="ctx-text">收到</span></div></div></figure><div class="reply"><span class="r-label">建议回复</span><span class="r-text">张叔，冬枣月底到货，价格一出来第一时间告诉您，先给您记上五斤留着？</span><button type="button" class="copy-btn" data-copy="张叔，冬枣月底到货，价格一出来第一时间告诉您，先给您记上五斤留着？">复制话术</button></div></div></article><article class="card"><div class="rank">5</div><div><div class="card-head"><span class="card-title">无籽葡萄的事问了两次，已等 5 天</span><span class="chip chip-question">提问</span><span class="chip-wait">已等 5 天</span><label class="done-toggle"><input type="checkbox" data-key="followup-5">已跟进</label></div><div class="card-meta"><b>佳佳妈</b> · 幸福里1号院团购群</div><p class="card-reason">周四第一次问、周日又追了一次，是本周等得最久的提问。孩子指名要吃，是稳定复购的品类。</p><figure class="evidence evidence-amber"><blockquote>芳姐 无籽葡萄这周还会有吗？孩子就爱吃这个</blockquote><figcaption><span class="ev-who">佳佳妈</span><span class="ev-sep">·</span><span class="ev-time">8月13日 周四 09:30</span><span class="ev-sep">·</span><span class="ev-group">幸福里1号院团购群</span><code class="ev-id">wechat-5768784632e42a65</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月12日 周三 20:11</span><span class="ctx-author">李姐</span><span class="ctx-text">葡萄收到了，很新鲜</span></div><div class="ctx-row"><span class="ctx-time">8月12日 周三 20:15</span><span class="ctx-author">芳姐</span><span class="ctx-text">[quote] 葡萄收到了，很新鲜 | 谢谢李姐捧场，甜就多来点</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月13日 周四 09:30</span><span class="ctx-author">佳佳妈</span><span class="ctx-text">芳姐 无籽葡萄这周还会有吗？孩子就爱吃这个</span></div><div class="ctx-row"><span class="ctx-time">8月13日 周四 10:02</span><span class="ctx-author">小美</span><span class="ctx-text">水蜜桃是奉化的吗</span></div><div class="ctx-row"><span class="ctx-time">8月13日 周四 10:15</span><span class="ctx-author">芳姐</span><span class="ctx-text">对，奉化直发，周六到</span></div></div></figure><figure class="evidence evidence-amber"><blockquote>对了葡萄的事看到回我一下哈</blockquote><figcaption><span class="ev-who">佳佳妈</span><span class="ev-sep">·</span><span class="ev-time">8月16日 周日 11:00</span><span class="ev-sep">·</span><span class="ev-group">幸福里1号院团购群</span><code class="ev-id">wechat-f8ac18fbd8aed1dc</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月15日 周六 17:55</span><span class="ctx-author">赵哥</span><span class="ctx-text">瓜收到，谢谢留货</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 09:35</span><span class="ctx-author">302王阿姨</span><span class="ctx-text">芳姐 昨天的水蜜桃有两个是坏的，你看怎么说</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月16日 周日 11:00</span><span class="ctx-author">佳佳妈</span><span class="ctx-text">对了葡萄的事看到回我一下哈</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 21:14</span><span class="ctx-author">小美</span><span class="ctx-text">芳姐明天还开门吗</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 21:40</span><span class="ctx-author">芳姐</span><span class="ctx-text">开的，上午都在</span></div></div></figure><div class="reply"><span class="r-label">建议回复</span><span class="r-text">佳佳妈抱歉回晚了！无籽的这周四还有一批，先给孩子留 2 斤？</span><button type="button" class="copy-btn" data-copy="佳佳妈抱歉回晚了！无籽的这周四还有一批，先给孩子留 2 斤？">复制话术</button></div></div></article>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-mark mark-amber"></span><span class="sec-no">叁</span><h2>没人回复的客户提问</h2><span class="count">6 条</span></div>
+  <div class="rows"><div class="row"><div><div class="row-main"><b>佳佳妈</b>　无籽葡萄这周还有吗（8/16 追问过一次）</div><div class="row-meta">幸福里1号院团购群</div></div><div class="row-side"><span class="chip-wait">已等 5 天</span></div><figure class="evidence evidence-amber"><blockquote>芳姐 无籽葡萄这周还会有吗？孩子就爱吃这个</blockquote><figcaption><span class="ev-who">佳佳妈</span><span class="ev-sep">·</span><span class="ev-time">8月13日 周四 09:30</span><span class="ev-sep">·</span><span class="ev-group">幸福里1号院团购群</span><code class="ev-id">wechat-5768784632e42a65</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月12日 周三 20:11</span><span class="ctx-author">李姐</span><span class="ctx-text">葡萄收到了，很新鲜</span></div><div class="ctx-row"><span class="ctx-time">8月12日 周三 20:15</span><span class="ctx-author">芳姐</span><span class="ctx-text">[quote] 葡萄收到了，很新鲜 | 谢谢李姐捧场，甜就多来点</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月13日 周四 09:30</span><span class="ctx-author">佳佳妈</span><span class="ctx-text">芳姐 无籽葡萄这周还会有吗？孩子就爱吃这个</span></div><div class="ctx-row"><span class="ctx-time">8月13日 周四 10:02</span><span class="ctx-author">小美</span><span class="ctx-text">水蜜桃是奉化的吗</span></div><div class="ctx-row"><span class="ctx-time">8月13日 周四 10:15</span><span class="ctx-author">芳姐</span><span class="ctx-text">对，奉化直发，周六到</span></div></div></figure><figure class="evidence evidence-amber"><blockquote>对了葡萄的事看到回我一下哈</blockquote><figcaption><span class="ev-who">佳佳妈</span><span class="ev-sep">·</span><span class="ev-time">8月16日 周日 11:00</span><span class="ev-sep">·</span><span class="ev-group">幸福里1号院团购群</span><code class="ev-id">wechat-f8ac18fbd8aed1dc</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月15日 周六 17:55</span><span class="ctx-author">赵哥</span><span class="ctx-text">瓜收到，谢谢留货</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 09:35</span><span class="ctx-author">302王阿姨</span><span class="ctx-text">芳姐 昨天的水蜜桃有两个是坏的，你看怎么说</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月16日 周日 11:00</span><span class="ctx-author">佳佳妈</span><span class="ctx-text">对了葡萄的事看到回我一下哈</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 21:14</span><span class="ctx-author">小美</span><span class="ctx-text">芳姐明天还开门吗</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 21:40</span><span class="ctx-author">芳姐</span><span class="ctx-text">开的，上午都在</span></div></div></figure></div><div class="row"><div><div class="row-main"><b>刘婶</b>　周六的桃子能否送上楼——配送日已过仍未回，需要补救性联系</div><div class="row-meta">幸福里1号院团购群</div></div><div class="row-side"><span class="chip-wait">已等 4 天</span></div><figure class="evidence evidence-amber"><blockquote>周六的桃子能帮我送到楼上吗？我腿脚不方便</blockquote><figcaption><span class="ev-who">刘婶</span><span class="ev-sep">·</span><span class="ev-time">8月14日 周五 16:33</span><span class="ev-sep">·</span><span class="ev-group">幸福里1号院团购群</span><code class="ev-id">wechat-fdd2bf396d1966f3</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月13日 周四 14:05</span><span class="ctx-author">芳姐</span><span class="ctx-text">好嘞王阿姨，给您记上了</span></div><div class="ctx-row"><span class="ctx-time">8月14日 周五 10:20</span><span class="ctx-author">陈晨</span><span class="ctx-text">[link] 夏季水果营养搭配指南</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月14日 周五 16:33</span><span class="ctx-author">刘婶</span><span class="ctx-text">周六的桃子能帮我送到楼上吗？我腿脚不方便</span></div><div class="ctx-row"><span class="ctx-time">8月14日 周五 19:02</span><span class="ctx-author">芳姐</span><span class="ctx-text">明天水蜜桃和麒麟瓜到店，接龙的邻居明早十点后可以来拿，也可以约配送</span></div><div class="ctx-row"><span class="ctx-time">8月14日 周五 19:05</span><span class="ctx-author">小美</span><span class="ctx-text">好的</span></div></div></figure></div><div class="row"><div><div class="row-main"><b>Amy</b>　能否开发票，公司下午茶想订水果</div><div class="row-meta">老客户VIP群</div></div><div class="row-side"><span class="chip-wait">已等 4 天</span></div><figure class="evidence evidence-amber"><blockquote>你们能开发票吗？公司下午茶想在你这儿订水果</blockquote><figcaption><span class="ev-who">Amy</span><span class="ev-sep">·</span><span class="ev-time">8月14日 周五 14:22</span><span class="ev-sep">·</span><span class="ev-group">老客户VIP群</span><code class="ev-id">wechat-566833430adfb253</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月13日 周四 15:05</span><span class="ctx-author">芳姐</span><span class="ctx-text">@何总 方案发您微信了，您过目</span></div><div class="ctx-row"><span class="ctx-time">8月13日 周四 15:30</span><span class="ctx-author">何总</span><span class="ctx-text">收到，我转给行政</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月14日 周五 14:22</span><span class="ctx-author">Amy</span><span class="ctx-text">你们能开发票吗？公司下午茶想在你这儿订水果</span></div><div class="ctx-row"><span class="ctx-time">8月14日 周五 20:11</span><span class="ctx-author">周姐</span><span class="ctx-text">桃子明天到了先给我送，上午家里有人</span></div><div class="ctx-row"><span class="ctx-time">8月15日 周六 09:00</span><span class="ctx-author">芳姐</span><span class="ctx-text">好的周姐，上午第一批就送您家</span></div></div></figure></div><div class="row"><div><div class="row-main"><b>张叔</b>　冬枣什么价，到货要五斤</div><div class="row-meta">幸福里2号院团购群</div></div><div class="row-side"><span class="chip-wait">已等 4 天</span></div><figure class="evidence evidence-amber"><blockquote>冬枣什么价？到时候给我来五斤</blockquote><figcaption><span class="ev-who">张叔</span><span class="ev-sep">·</span><span class="ev-time">8月14日 周五 09:26</span><span class="ev-sep">·</span><span class="ev-group">幸福里2号院团购群</span><code class="ev-id">wechat-a85702350e12d50d</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月13日 周四 10:15</span><span class="ctx-author">芳姐</span><span class="ctx-text">今早已经开始送了，下午到您那栋</span></div><div class="ctx-row"><span class="ctx-time">8月13日 周四 18:40</span><span class="ctx-author">桂芳</span><span class="ctx-text">收到，味道可以</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月14日 周五 09:26</span><span class="ctx-author">张叔</span><span class="ctx-text">冬枣什么价？到时候给我来五斤</span></div><div class="ctx-row"><span class="ctx-time">8月14日 周五 12:00</span><span class="ctx-author">芳姐</span><span class="ctx-text">明天桃子、麒麟瓜和榴莲到店</span></div><div class="ctx-row"><span class="ctx-time">8月14日 周五 12:10</span><span class="ctx-author">敏敏</span><span class="ctx-text">收到</span></div></div></figure></div><div class="row"><div><div class="row-main"><b>老周</b>　麒麟瓜还有没有，甜的话再要两个</div><div class="row-meta">幸福里2号院团购群</div></div><div class="row-side"><span class="chip-wait">已等 1 天</span></div><figure class="evidence evidence-amber"><blockquote>上次那个麒麟瓜还有吗？甜的话再要两个</blockquote><figcaption><span class="ev-who">老周</span><span class="ev-sep">·</span><span class="ev-time">8月17日 周一 09:31</span><span class="ev-sep">·</span><span class="ev-group">幸福里2号院团购群</span><code class="ev-id">wechat-ed4b0221a0c423e6</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月16日 周日 19:48</span><span class="ctx-author">大力</span><span class="ctx-text">到了，行吧，瓜果给孩子吃了</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 19:50</span><span class="ctx-author">芳姐</span><span class="ctx-text">感谢理解，下次一定盯紧物流</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月17日 周一 09:31</span><span class="ctx-author">老周</span><span class="ctx-text">上次那个麒麟瓜还有吗？甜的话再要两个</span></div><div class="ctx-row"><span class="ctx-time">8月17日 周一 20:02</span><span class="ctx-author">强子</span><span class="ctx-text">下周有啥？预告下呗</span></div><div class="ctx-row"><span class="ctx-time">8月17日 周一 20:30</span><span class="ctx-author">芳姐</span><span class="ctx-text">明天上午发预告哈</span></div></div></figure></div><div class="row"><div><div class="row-main"><b>楠楠</b>　中秋礼盒是否开订，部门想订 20 盒</div><div class="row-meta">老客户VIP群</div></div><div class="row-side"><span class="chip-wait">今天提出</span></div><figure class="evidence evidence-amber"><blockquote>中秋礼盒开始订了吗？我们部门想订20盒，预算100左右一盒</blockquote><figcaption><span class="ev-who">楠楠</span><span class="ev-sep">·</span><span class="ev-time">8月17日 周一 21:47</span><span class="ev-sep">·</span><span class="ev-group">老客户VIP群</span><code class="ev-id">wechat-1b520dfb8569b020</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月16日 周日 16:08</span><span class="ctx-author">楠楠</span><span class="ctx-text">[image]</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 16:09</span><span class="ctx-author">楠楠</span><span class="ctx-text">朋友公司发的中秋果篮，你们做这种吗</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月17日 周一 21:47</span><span class="ctx-author">楠楠</span><span class="ctx-text">中秋礼盒开始订了吗？我们部门想订20盒，预算100左右一盒</span></div><div class="ctx-row"><span class="ctx-time">8月17日 周一 21:50</span><span class="ctx-author">周姐</span><span class="ctx-text">礼盒我也想看看</span></div></div></figure></div></div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-mark mark-green"></span><span class="sec-no">肆</span><h2>购买意向线索</h2><span class="count">5 条</span></div>
+  <div class="rows"><div class="row"><div><div class="row-main"><b>楠楠</b>　部门中秋礼盒 20 盒，预算 100 元/盒</div><div class="row-meta">老客户VIP群</div></div><div class="row-side"><span class="estimate">约 2000 元</span></div><figure class="evidence evidence-green"><blockquote>中秋礼盒开始订了吗？我们部门想订20盒，预算100左右一盒</blockquote><figcaption><span class="ev-who">楠楠</span><span class="ev-sep">·</span><span class="ev-time">8月17日 周一 21:47</span><span class="ev-sep">·</span><span class="ev-group">老客户VIP群</span><code class="ev-id">wechat-1b520dfb8569b020</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月16日 周日 16:08</span><span class="ctx-author">楠楠</span><span class="ctx-text">[image]</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 16:09</span><span class="ctx-author">楠楠</span><span class="ctx-text">朋友公司发的中秋果篮，你们做这种吗</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月17日 周一 21:47</span><span class="ctx-author">楠楠</span><span class="ctx-text">中秋礼盒开始订了吗？我们部门想订20盒，预算100左右一盒</span></div><div class="ctx-row"><span class="ctx-time">8月17日 周一 21:50</span><span class="ctx-author">周姐</span><span class="ctx-text">礼盒我也想看看</span></div></div></figure><figure class="evidence evidence-green"><blockquote>朋友公司发的中秋果篮，你们做这种吗</blockquote><figcaption><span class="ev-who">楠楠</span><span class="ev-sep">·</span><span class="ev-time">8月16日 周日 16:09</span><span class="ev-sep">·</span><span class="ev-group">老客户VIP群</span><code class="ev-id">wechat-5c6b3772918d7a81</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月15日 周六 12:45</span><span class="ctx-author">芳姐</span><span class="ctx-text">[quote] 妃子笑收到，我妈说很新鲜 | 阿姨喜欢就好</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 16:08</span><span class="ctx-author">楠楠</span><span class="ctx-text">[image]</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月16日 周日 16:09</span><span class="ctx-author">楠楠</span><span class="ctx-text">朋友公司发的中秋果篮，你们做这种吗</span></div><div class="ctx-row"><span class="ctx-time">8月17日 周一 21:47</span><span class="ctx-author">楠楠</span><span class="ctx-text">中秋礼盒开始订了吗？我们部门想订20盒，预算100左右一盒</span></div><div class="ctx-row"><span class="ctx-time">8月17日 周一 21:50</span><span class="ctx-author">周姐</span><span class="ctx-text">礼盒我也想看看</span></div></div></figure></div><div class="row"><div><div class="row-main"><b>Amy</b>　公司下午茶周期性订水果（问到发票）</div><div class="row-meta">老客户VIP群</div></div><div class="row-side"><span class="estimate">潜在长期订单</span></div><figure class="evidence evidence-green"><blockquote>你们能开发票吗？公司下午茶想在你这儿订水果</blockquote><figcaption><span class="ev-who">Amy</span><span class="ev-sep">·</span><span class="ev-time">8月14日 周五 14:22</span><span class="ev-sep">·</span><span class="ev-group">老客户VIP群</span><code class="ev-id">wechat-566833430adfb253</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月13日 周四 15:05</span><span class="ctx-author">芳姐</span><span class="ctx-text">@何总 方案发您微信了，您过目</span></div><div class="ctx-row"><span class="ctx-time">8月13日 周四 15:30</span><span class="ctx-author">何总</span><span class="ctx-text">收到，我转给行政</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月14日 周五 14:22</span><span class="ctx-author">Amy</span><span class="ctx-text">你们能开发票吗？公司下午茶想在你这儿订水果</span></div><div class="ctx-row"><span class="ctx-time">8月14日 周五 20:11</span><span class="ctx-author">周姐</span><span class="ctx-text">桃子明天到了先给我送，上午家里有人</span></div><div class="ctx-row"><span class="ctx-time">8月15日 周六 09:00</span><span class="ctx-author">芳姐</span><span class="ctx-text">好的周姐，上午第一批就送您家</span></div></div></figure></div><div class="row"><div><div class="row-main"><b>张叔</b>　冬枣到货要五斤</div><div class="row-meta">幸福里2号院团购群</div></div><div class="row-side"></div><figure class="evidence evidence-green"><blockquote>冬枣什么价？到时候给我来五斤</blockquote><figcaption><span class="ev-who">张叔</span><span class="ev-sep">·</span><span class="ev-time">8月14日 周五 09:26</span><span class="ev-sep">·</span><span class="ev-group">幸福里2号院团购群</span><code class="ev-id">wechat-a85702350e12d50d</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月13日 周四 10:15</span><span class="ctx-author">芳姐</span><span class="ctx-text">今早已经开始送了，下午到您那栋</span></div><div class="ctx-row"><span class="ctx-time">8月13日 周四 18:40</span><span class="ctx-author">桂芳</span><span class="ctx-text">收到，味道可以</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月14日 周五 09:26</span><span class="ctx-author">张叔</span><span class="ctx-text">冬枣什么价？到时候给我来五斤</span></div><div class="ctx-row"><span class="ctx-time">8月14日 周五 12:00</span><span class="ctx-author">芳姐</span><span class="ctx-text">明天桃子、麒麟瓜和榴莲到店</span></div><div class="ctx-row"><span class="ctx-time">8月14日 周五 12:10</span><span class="ctx-author">敏敏</span><span class="ctx-text">收到</span></div></div></figure></div><div class="row"><div><div class="row-main"><b>老周</b>　麒麟瓜再要两个</div><div class="row-meta">幸福里2号院团购群</div></div><div class="row-side"></div><figure class="evidence evidence-green"><blockquote>上次那个麒麟瓜还有吗？甜的话再要两个</blockquote><figcaption><span class="ev-who">老周</span><span class="ev-sep">·</span><span class="ev-time">8月17日 周一 09:31</span><span class="ev-sep">·</span><span class="ev-group">幸福里2号院团购群</span><code class="ev-id">wechat-ed4b0221a0c423e6</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月16日 周日 19:48</span><span class="ctx-author">大力</span><span class="ctx-text">到了，行吧，瓜果给孩子吃了</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 19:50</span><span class="ctx-author">芳姐</span><span class="ctx-text">感谢理解，下次一定盯紧物流</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月17日 周一 09:31</span><span class="ctx-author">老周</span><span class="ctx-text">上次那个麒麟瓜还有吗？甜的话再要两个</span></div><div class="ctx-row"><span class="ctx-time">8月17日 周一 20:02</span><span class="ctx-author">强子</span><span class="ctx-text">下周有啥？预告下呗</span></div><div class="ctx-row"><span class="ctx-time">8月17日 周一 20:30</span><span class="ctx-author">芳姐</span><span class="ctx-text">明天上午发预告哈</span></div></div></figure></div><div class="row"><div><div class="row-main"><b>陈晨</b>　长期委托：有阳光玫瑰就@他，每次 3 斤</div><div class="row-meta">幸福里1号院团购群</div></div><div class="row-side"></div><figure class="evidence evidence-green"><blockquote>下次有阳光玫瑰记得@我，要3斤，最近出差不方便看群</blockquote><figcaption><span class="ev-who">陈晨</span><span class="ev-sep">·</span><span class="ev-time">8月11日 周二 10:30</span><span class="ev-sep">·</span><span class="ev-group">幸福里1号院团购群</span><code class="ev-id">wechat-e0187ef54174987a</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月11日 周二 09:48</span><span class="ctx-author">302王阿姨</span><span class="ctx-text">葡萄甜不甜啊，上回的有点酸</span></div><div class="ctx-row"><span class="ctx-time">8月11日 周二 09:55</span><span class="ctx-author">芳姐</span><span class="ctx-text">王阿姨这批是大棚二茬果，我自己尝过比上次甜，不甜您找我</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月11日 周二 10:30</span><span class="ctx-author">陈晨</span><span class="ctx-text">下次有阳光玫瑰记得@我，要3斤，最近出差不方便看群</span></div><div class="ctx-row"><span class="ctx-time">8月11日 周二 12:05</span><span class="ctx-author">佳佳妈</span><span class="ctx-text">#接龙 阳光玫瑰葡萄团
+1. 李姐 2斤
+2. 小美 1斤
+3. 佳佳妈 2斤</span></div><div class="ctx-row"><span class="ctx-time">8月11日 周二 15:40</span><span class="ctx-author">赵哥</span><span class="ctx-text">芳姐 西瓜现在什么价</span></div></div></figure></div></div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-mark mark-red"></span><span class="sec-no">伍</span><h2>风险与投诉</h2><span class="count">2 条</span></div>
+  <div class="rows"><div class="row"><div><div class="row-main"><b>302王阿姨</b>　水蜜桃坏果投诉，两天未获回应且已追问一次</div><div class="row-meta">幸福里1号院团购群</div></div><div class="row-side"><span class="sev sev-high">高风险 · 未处理</span></div><figure class="evidence evidence-red"><blockquote>芳姐 昨天的水蜜桃有两个是坏的，你看怎么说</blockquote><figcaption><span class="ev-who">302王阿姨</span><span class="ev-sep">·</span><span class="ev-time">8月16日 周日 09:35</span><span class="ev-sep">·</span><span class="ev-group">幸福里1号院团购群</span><code class="ev-id">wechat-5a450df6e477a7a1</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月15日 周六 13:41</span><span class="ctx-author">李姐</span><span class="ctx-text">[image]</span></div><div class="ctx-row"><span class="ctx-time">8月15日 周六 17:55</span><span class="ctx-author">赵哥</span><span class="ctx-text">瓜收到，谢谢留货</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月16日 周日 09:35</span><span class="ctx-author">302王阿姨</span><span class="ctx-text">芳姐 昨天的水蜜桃有两个是坏的，你看怎么说</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 11:00</span><span class="ctx-author">佳佳妈</span><span class="ctx-text">对了葡萄的事看到回我一下哈</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 21:14</span><span class="ctx-author">小美</span><span class="ctx-text">芳姐明天还开门吗</span></div></div></figure><figure class="evidence evidence-red"><blockquote>芳姐看到消息了吗？桃子坏果的事</blockquote><figcaption><span class="ev-who">302王阿姨</span><span class="ev-sep">·</span><span class="ev-time">8月17日 周一 10:05</span><span class="ev-sep">·</span><span class="ev-group">幸福里1号院团购群</span><code class="ev-id">wechat-558ac353ef38796c</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月16日 周日 21:14</span><span class="ctx-author">小美</span><span class="ctx-text">芳姐明天还开门吗</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 21:40</span><span class="ctx-author">芳姐</span><span class="ctx-text">开的，上午都在</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月17日 周一 10:05</span><span class="ctx-author">302王阿姨</span><span class="ctx-text">芳姐看到消息了吗？桃子坏果的事</span></div><div class="ctx-row"><span class="ctx-time">8月17日 周一 11:30</span><span class="ctx-author">刘婶</span><span class="ctx-text">[voice]</span></div><div class="ctx-row"><span class="ctx-time">8月17日 周一 14:00</span><span class="ctx-author">芳姐</span><span class="ctx-text">下周团购预告明天发，这周谢谢大家支持</span></div></div></figure></div><div class="row"><div><div class="row-main"><b>大力</b>　榴莲比约定晚到一天引发不满，已当天致歉并补偿两斤葡萄</div><div class="row-meta">幸福里2号院团购群</div></div><div class="row-side"><span class="sev sev-low">低风险 · 已安抚，建议下次物流延迟提前在群里报备</span></div><figure class="evidence evidence-red"><blockquote>说好周六的榴莲，这都周日下午了还没到</blockquote><figcaption><span class="ev-who">大力</span><span class="ev-sep">·</span><span class="ev-time">8月16日 周日 15:21</span><span class="ev-sep">·</span><span class="ev-group">幸福里2号院团购群</span><code class="ev-id">wechat-f6b1d28e1ab9c5ef</code><button type="button" class="ctx-toggle" aria-expanded="false">上下文</button></figcaption><div class="ctx" hidden><div class="ctx-row"><span class="ctx-time">8月15日 周六 16:44</span><span class="ctx-author">大力</span><span class="ctx-text">榴莲今天到底到不到</span></div><div class="ctx-row"><span class="ctx-time">8月15日 周六 17:00</span><span class="ctx-author">芳姐</span><span class="ctx-text">物流卡在中转，最晚明天，抱歉抱歉</span></div><div class="ctx-row ctx-hit"><span class="ctx-time">8月16日 周日 15:21</span><span class="ctx-author">大力</span><span class="ctx-text">说好周六的榴莲，这都周日下午了还没到</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 15:40</span><span class="ctx-author">芳姐</span><span class="ctx-text">大力哥实在抱歉，刚问了已经在派送了，晚上肯定到，到了我第一时间送您家，再送两斤葡萄赔罪</span></div><div class="ctx-row"><span class="ctx-time">8月16日 周日 19:48</span><span class="ctx-author">大力</span><span class="ctx-text">到了，行吧，瓜果给孩子吃了</span></div></div></figure></div></div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-no">陆</span><h2>群活跃概览</h2><span class="count">周二 — 周一</span></div>
+  <div class="group-row"><div><span class="group-name">幸福里1号院团购群</span>　<span class="group-stats">43 条 · 8 人参与 · 3 条疑问句</span></div><svg class="spark" viewBox="0 0 154 54" width="154" height="54" role="img" aria-label="每日消息量"><rect x="4" y="4" width="14" height="36" rx="1.5" fill="#0E7A45"><title>8/11：11 条</title></rect><text x="11.0" y="51" text-anchor="middle" class="axis">二</text><rect x="26" y="14" width="14" height="26" rx="1.5" fill="#9CC9AE"><title>8/12：8 条</title></rect><text x="33.0" y="51" text-anchor="middle" class="axis">三</text><rect x="48" y="24" width="14" height="16" rx="1.5" fill="#9CC9AE"><title>8/13：5 条</title></rect><text x="55.0" y="51" text-anchor="middle" class="axis">四</text><rect x="70" y="27" width="14" height="13" rx="1.5" fill="#9CC9AE"><title>8/14：4 条</title></rect><text x="77.0" y="51" text-anchor="middle" class="axis">五</text><rect x="92" y="17" width="14" height="23" rx="1.5" fill="#9CC9AE"><title>8/15：7 条</title></rect><text x="99.0" y="51" text-anchor="middle" class="axis">六</text><rect x="114" y="27" width="14" height="13" rx="1.5" fill="#9CC9AE"><title>8/16：4 条</title></rect><text x="121.0" y="51" text-anchor="middle" class="axis">日</text><rect x="136" y="27" width="14" height="13" rx="1.5" fill="#9CC9AE"><title>8/17：4 条</title></rect><text x="143.0" y="51" text-anchor="middle" class="axis">一</text></svg><p class="group-note">消息量最大、回复率也最高，但本周等得最久的两条未回复（佳佳妈、刘婶）都在这里。</p></div><div class="group-row"><div><span class="group-name">幸福里2号院团购群</span>　<span class="group-stats">30 条 · 7 人参与 · 4 条疑问句</span></div><svg class="spark" viewBox="0 0 154 54" width="154" height="54" role="img" aria-label="每日消息量"><rect x="4" y="20" width="14" height="20" rx="1.5" fill="#9CC9AE"><title>8/11：6 条</title></rect><text x="11.0" y="51" text-anchor="middle" class="axis">二</text><rect x="26" y="17" width="14" height="23" rx="1.5" fill="#0E7A45"><title>8/12：7 条</title></rect><text x="33.0" y="51" text-anchor="middle" class="axis">三</text><rect x="48" y="30" width="14" height="10" rx="1.5" fill="#9CC9AE"><title>8/13：3 条</title></rect><text x="55.0" y="51" text-anchor="middle" class="axis">四</text><rect x="70" y="27" width="14" height="13" rx="1.5" fill="#9CC9AE"><title>8/14：4 条</title></rect><text x="77.0" y="51" text-anchor="middle" class="axis">五</text><rect x="92" y="30" width="14" height="10" rx="1.5" fill="#9CC9AE"><title>8/15：3 条</title></rect><text x="99.0" y="51" text-anchor="middle" class="axis">六</text><rect x="114" y="27" width="14" height="13" rx="1.5" fill="#9CC9AE"><title>8/16：4 条</title></rect><text x="121.0" y="51" text-anchor="middle" class="axis">日</text><rect x="136" y="30" width="14" height="10" rx="1.5" fill="#9CC9AE"><title>8/17：3 条</title></rect><text x="143.0" y="51" text-anchor="middle" class="axis">一</text></svg><p class="group-note">接龙参与稳定；榴莲延迟当天道歉加补偿，处理得当，客户情绪已平复。</p></div><div class="group-row"><div><span class="group-name">老客户VIP群</span>　<span class="group-stats">20 条 · 6 人参与 · 4 条疑问句</span></div><svg class="spark" viewBox="0 0 154 54" width="154" height="54" role="img" aria-label="每日消息量"><rect x="4" y="30" width="14" height="10" rx="1.5" fill="#9CC9AE"><title>8/11：3 条</title></rect><text x="11.0" y="51" text-anchor="middle" class="axis">二</text><rect x="26" y="30" width="14" height="10" rx="1.5" fill="#9CC9AE"><title>8/12：3 条</title></rect><text x="33.0" y="51" text-anchor="middle" class="axis">三</text><rect x="48" y="24" width="14" height="16" rx="1.5" fill="#0E7A45"><title>8/13：5 条</title></rect><text x="55.0" y="51" text-anchor="middle" class="axis">四</text><rect x="70" y="33" width="14" height="7" rx="1.5" fill="#9CC9AE"><title>8/14：2 条</title></rect><text x="77.0" y="51" text-anchor="middle" class="axis">五</text><rect x="92" y="30" width="14" height="10" rx="1.5" fill="#9CC9AE"><title>8/15：3 条</title></rect><text x="99.0" y="51" text-anchor="middle" class="axis">六</text><rect x="114" y="33" width="14" height="7" rx="1.5" fill="#9CC9AE"><title>8/16：2 条</title></rect><text x="121.0" y="51" text-anchor="middle" class="axis">日</text><rect x="136" y="33" width="14" height="7" rx="1.5" fill="#9CC9AE"><title>8/17：2 条</title></rect><text x="143.0" y="51" text-anchor="middle" class="axis">一</text></svg><p class="group-note">消息最少（20 条）但含金量最高：两条企业订单线索都来自这里。建议每天睡前专门过一遍这个群。</p></div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="sec-no">柒</span><h2>数据范围与边界</h2></div>
+  <div class="coverage">
+    <dl>
+      <dt>数据来源</dt><dd>本机微信群聊导出（只读），共 3 个群、93 条消息</dd>
+      <dt>完整性</dt><dd>无截断；解码失败 0 条</dd>
+      <dt>隐私</dt><dd>报告在本机生成，聊天数据与报告均未上传；发送与跟进由你决定</dd>
+      <dt>盲区</dt><dd><ul><li>2 条语音消息（8/12、8/17 刘婶）无法读取内容，若涉及订单请人工确认。</li><li>图片仅记录为 [image]，果况照片与接龙截图未纳入分析。</li><li>仅覆盖已导出的 3 个群，私聊与其他群不在本报告范围内。</li></ul></dd>
+    </dl>
+  </div>
+</section>
+
+<footer>
+  <span class="ev-check">证据校验 25/25 通过 — 每条结论都能点开群里的原话</span>
+  <span>生成于 2026年8月18日 09:30 · wechat-group-insights · <a href="https://github.com/aqm857886159/aqm-s-skills">开源</a></span>
+</footer>
+
+</div>
+<script>
+document.addEventListener('click', function (event) {
+  var toggle = event.target.closest('.ctx-toggle');
+  if (toggle) {
+    var ctx = toggle.closest('.evidence').querySelector('.ctx');
+    var open = ctx.hasAttribute('hidden');
+    if (open) { ctx.removeAttribute('hidden'); } else { ctx.setAttribute('hidden', ''); }
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.textContent = open ? '收起' : '上下文';
+    return;
+  }
+  var copy = event.target.closest('.copy-btn');
+  if (copy) {
+    var text = copy.getAttribute('data-copy') || '';
+    var done = function () {
+      copy.classList.add('copied');
+      copy.textContent = '已复制';
+      setTimeout(function () { copy.classList.remove('copied'); copy.textContent = '复制话术'; }, 1600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done);
+    } else {
+      var area = document.createElement('textarea');
+      area.value = text; document.body.appendChild(area); area.select();
+      try { document.execCommand('copy'); } catch (ignored) {}
+      document.body.removeChild(area); done();
+    }
+  }
+});
+var reportKey = document.body.getAttribute('data-report-key') || 'wechat-weekly';
+document.querySelectorAll('.done-toggle input').forEach(function (box) {
+  var key = reportKey + ':' + box.getAttribute('data-key');
+  var saved = null;
+  try { saved = localStorage.getItem(key); } catch (ignored) {}
+  if (saved === '1') { box.checked = true; box.closest('.card').classList.add('is-done'); }
+  box.addEventListener('change', function () {
+    box.closest('.card').classList.toggle('is-done', box.checked);
+    try { localStorage.setItem(key, box.checked ? '1' : '0'); } catch (ignored) {}
+  });
+});
+</script>
+</body>
+</html>

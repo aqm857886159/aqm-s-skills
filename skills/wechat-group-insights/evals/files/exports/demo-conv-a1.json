@@ -1,0 +1,389 @@
+{
+  "schemaVersion": 1,
+  "source": "wechat-local",
+  "exportedAt": "2026-08-18T01:12:00Z",
+  "conversation": {
+    "name": "幸福里1号院团购群",
+    "conversationId": "demo-conv-a1"
+  },
+  "coverage": {
+    "since": "2026-08-10T16:00:00Z",
+    "until": "2026-08-17T15:59:59Z",
+    "requestedLimit": 5000,
+    "availableCount": 43,
+    "exportedCount": 43,
+    "truncated": false,
+    "messageDatabasesScanned": 1,
+    "messageTablesMatched": 1,
+    "decodeFailures": 0
+  },
+  "privacy": {
+    "authorsRedacted": false,
+    "databasePathsIncluded": false,
+    "mediaKeysIncluded": false,
+    "uploaded": false
+  },
+  "capabilities": {
+    "mediaMetadata": true,
+    "mediaFileDecryption": false
+  },
+  "warnings": [],
+  "messages": [
+    {
+      "id": "wechat-c69ac6edad75dc54",
+      "sourceId": "1000",
+      "type": "text",
+      "author": "芳姐",
+      "text": "各位邻居早上好！本周团购安排：周三阳光玫瑰葡萄，周六奉化水蜜桃+麒麟瓜，基地直发，需要的接龙～",
+      "createdAt": "2026-08-11T01:02:00Z"
+    },
+    {
+      "id": "wechat-361195e9a503c783",
+      "sourceId": "1001",
+      "type": "image",
+      "author": "芳姐",
+      "text": "[image]",
+      "createdAt": "2026-08-11T01:03:00Z",
+      "media": {
+        "mediaId": "c619d232231a9dcffa4a41781206f687"
+      }
+    },
+    {
+      "id": "wechat-b0be59a9a3d3352a",
+      "sourceId": "1002",
+      "type": "text",
+      "author": "李姐",
+      "text": "#接龙 阳光玫瑰葡萄团\n1. 李姐 2斤",
+      "createdAt": "2026-08-11T01:15:00Z"
+    },
+    {
+      "id": "wechat-9427be320a2f60b6",
+      "sourceId": "1003",
+      "type": "text",
+      "author": "小美",
+      "text": "#接龙 阳光玫瑰葡萄团\n1. 李姐 2斤\n2. 小美 1斤",
+      "createdAt": "2026-08-11T01:20:00Z"
+    },
+    {
+      "id": "wechat-5ca88696d2e15574",
+      "sourceId": "1004",
+      "type": "text",
+      "author": "302王阿姨",
+      "text": "葡萄甜不甜啊，上回的有点酸",
+      "createdAt": "2026-08-11T01:48:00Z"
+    },
+    {
+      "id": "wechat-5776639265fc65c7",
+      "sourceId": "1005",
+      "type": "text",
+      "author": "芳姐",
+      "text": "王阿姨这批是大棚二茬果，我自己尝过比上次甜，不甜您找我",
+      "createdAt": "2026-08-11T01:55:00Z"
+    },
+    {
+      "id": "wechat-e0187ef54174987a",
+      "sourceId": "1006",
+      "type": "text",
+      "author": "陈晨",
+      "text": "下次有阳光玫瑰记得@我，要3斤，最近出差不方便看群",
+      "createdAt": "2026-08-11T02:30:00Z"
+    },
+    {
+      "id": "wechat-da634ed2c6439b30",
+      "sourceId": "1007",
+      "type": "text",
+      "author": "佳佳妈",
+      "text": "#接龙 阳光玫瑰葡萄团\n1. 李姐 2斤\n2. 小美 1斤\n3. 佳佳妈 2斤",
+      "createdAt": "2026-08-11T04:05:00Z"
+    },
+    {
+      "id": "wechat-a9ba78e82e48061e",
+      "sourceId": "1008",
+      "type": "text",
+      "author": "赵哥",
+      "text": "芳姐 西瓜现在什么价",
+      "createdAt": "2026-08-11T07:40:00Z"
+    },
+    {
+      "id": "wechat-b8231fb978986c66",
+      "sourceId": "1009",
+      "type": "text",
+      "author": "芳姐",
+      "text": "麒麟瓜周五到，2.98一斤，整个买还能便宜",
+      "createdAt": "2026-08-11T07:52:00Z"
+    },
+    {
+      "id": "wechat-4076f050068898c3",
+      "sourceId": "1010",
+      "type": "text",
+      "author": "赵哥",
+      "text": "行，到了给我留一个",
+      "createdAt": "2026-08-11T08:00:00Z"
+    },
+    {
+      "id": "wechat-6094a14821d8a4de",
+      "sourceId": "1011",
+      "type": "text",
+      "author": "芳姐",
+      "text": "昨天接龙的葡萄今晚到店，明早开始配送",
+      "createdAt": "2026-08-12T00:55:00Z"
+    },
+    {
+      "id": "wechat-d6767a6fc6946eb0",
+      "sourceId": "1012",
+      "type": "text",
+      "author": "李姐",
+      "text": "收到",
+      "createdAt": "2026-08-12T01:01:00Z"
+    },
+    {
+      "id": "wechat-c0c5a3f849889595",
+      "sourceId": "1013",
+      "type": "text",
+      "author": "佳佳妈",
+      "text": "收到收到",
+      "createdAt": "2026-08-12T01:02:00Z"
+    },
+    {
+      "id": "wechat-a067d23c056289d8",
+      "sourceId": "1014",
+      "type": "voice",
+      "author": "刘婶",
+      "text": "[voice]",
+      "createdAt": "2026-08-12T03:20:00Z"
+    },
+    {
+      "id": "wechat-554fb0d4bfb8fbf0",
+      "sourceId": "1015",
+      "type": "text",
+      "author": "芳姐",
+      "text": "刘婶您的语音我听了，给您留2斤没问题",
+      "createdAt": "2026-08-12T03:45:00Z"
+    },
+    {
+      "id": "wechat-02013a111d8ac8aa",
+      "sourceId": "1016",
+      "type": "image",
+      "author": "李姐",
+      "text": "[image]",
+      "createdAt": "2026-08-12T12:10:00Z",
+      "media": {
+        "mediaId": "0c024407951a8e250b4e57b720651a60"
+      }
+    },
+    {
+      "id": "wechat-88bbd37e73e76667",
+      "sourceId": "1017",
+      "type": "text",
+      "author": "李姐",
+      "text": "葡萄收到了，很新鲜",
+      "createdAt": "2026-08-12T12:11:00Z"
+    },
+    {
+      "id": "wechat-5a49975f18097ae9",
+      "sourceId": "1018",
+      "type": "quote",
+      "author": "芳姐",
+      "text": "[quote] 葡萄收到了，很新鲜 | 谢谢李姐捧场，甜就多来点",
+      "createdAt": "2026-08-12T12:15:00Z"
+    },
+    {
+      "id": "wechat-5768784632e42a65",
+      "sourceId": "1019",
+      "type": "text",
+      "author": "佳佳妈",
+      "text": "芳姐 无籽葡萄这周还会有吗？孩子就爱吃这个",
+      "createdAt": "2026-08-13T01:30:00Z"
+    },
+    {
+      "id": "wechat-0aab15402d4ed1a8",
+      "sourceId": "1020",
+      "type": "text",
+      "author": "小美",
+      "text": "水蜜桃是奉化的吗",
+      "createdAt": "2026-08-13T02:02:00Z"
+    },
+    {
+      "id": "wechat-b5db37bbeb87e4ba",
+      "sourceId": "1021",
+      "type": "text",
+      "author": "芳姐",
+      "text": "对，奉化直发，周六到",
+      "createdAt": "2026-08-13T02:15:00Z"
+    },
+    {
+      "id": "wechat-99d548885bcfc0e0",
+      "sourceId": "1022",
+      "type": "text",
+      "author": "302王阿姨",
+      "text": "桃子给我留一箱",
+      "createdAt": "2026-08-13T06:00:00Z"
+    },
+    {
+      "id": "wechat-9aa3b5f2efa5a167",
+      "sourceId": "1023",
+      "type": "text",
+      "author": "芳姐",
+      "text": "好嘞王阿姨，给您记上了",
+      "createdAt": "2026-08-13T06:05:00Z"
+    },
+    {
+      "id": "wechat-a3be2bb628f06c0c",
+      "sourceId": "1024",
+      "type": "link",
+      "author": "陈晨",
+      "text": "[link] 夏季水果营养搭配指南",
+      "createdAt": "2026-08-14T02:20:00Z"
+    },
+    {
+      "id": "wechat-fdd2bf396d1966f3",
+      "sourceId": "1025",
+      "type": "text",
+      "author": "刘婶",
+      "text": "周六的桃子能帮我送到楼上吗？我腿脚不方便",
+      "createdAt": "2026-08-14T08:33:00Z"
+    },
+    {
+      "id": "wechat-cd6863a9f3ffd98d",
+      "sourceId": "1026",
+      "type": "text",
+      "author": "芳姐",
+      "text": "明天水蜜桃和麒麟瓜到店，接龙的邻居明早十点后可以来拿，也可以约配送",
+      "createdAt": "2026-08-14T11:02:00Z"
+    },
+    {
+      "id": "wechat-3e31c5f76af525e2",
+      "sourceId": "1027",
+      "type": "text",
+      "author": "小美",
+      "text": "好的",
+      "createdAt": "2026-08-14T11:05:00Z"
+    },
+    {
+      "id": "wechat-4cd94a37e2217164",
+      "sourceId": "1028",
+      "type": "text",
+      "author": "小美",
+      "text": "桃子几点能到啊",
+      "createdAt": "2026-08-15T01:12:00Z"
+    },
+    {
+      "id": "wechat-059bbcf71b8b62f6",
+      "sourceId": "1029",
+      "type": "text",
+      "author": "芳姐",
+      "text": "十点左右，到了我发群里",
+      "createdAt": "2026-08-15T01:20:00Z"
+    },
+    {
+      "id": "wechat-8c863b1a22d65266",
+      "sourceId": "1030",
+      "type": "text",
+      "author": "芳姐",
+      "text": "桃子和麒麟瓜都到啦，来拿的邻居别着急，都有",
+      "createdAt": "2026-08-15T02:24:00Z"
+    },
+    {
+      "id": "wechat-297899e7e7128cf3",
+      "sourceId": "1031",
+      "type": "image",
+      "author": "芳姐",
+      "text": "[image]",
+      "createdAt": "2026-08-15T02:25:00Z",
+      "media": {
+        "mediaId": "5a7511c17e1c7f5506be83c8581fdbe5"
+      }
+    },
+    {
+      "id": "wechat-51127f1ad94a8e35",
+      "sourceId": "1032",
+      "type": "text",
+      "author": "李姐",
+      "text": "麒麟瓜真不错，切开沙瓤的",
+      "createdAt": "2026-08-15T05:40:00Z"
+    },
+    {
+      "id": "wechat-24332561c2ec7f7e",
+      "sourceId": "1033",
+      "type": "image",
+      "author": "李姐",
+      "text": "[image]",
+      "createdAt": "2026-08-15T05:41:00Z",
+      "media": {
+        "mediaId": "acdfb3269767c603bdc5eb250c5e8e34"
+      }
+    },
+    {
+      "id": "wechat-def4975bdd01cac7",
+      "sourceId": "1034",
+      "type": "text",
+      "author": "赵哥",
+      "text": "瓜收到，谢谢留货",
+      "createdAt": "2026-08-15T09:55:00Z"
+    },
+    {
+      "id": "wechat-5a450df6e477a7a1",
+      "sourceId": "1035",
+      "type": "text",
+      "author": "302王阿姨",
+      "text": "芳姐 昨天的水蜜桃有两个是坏的，你看怎么说",
+      "createdAt": "2026-08-16T01:35:00Z"
+    },
+    {
+      "id": "wechat-f8ac18fbd8aed1dc",
+      "sourceId": "1036",
+      "type": "text",
+      "author": "佳佳妈",
+      "text": "对了葡萄的事看到回我一下哈",
+      "createdAt": "2026-08-16T03:00:00Z"
+    },
+    {
+      "id": "wechat-82caff9ed02a0dfd",
+      "sourceId": "1037",
+      "type": "text",
+      "author": "小美",
+      "text": "芳姐明天还开门吗",
+      "createdAt": "2026-08-16T13:14:00Z"
+    },
+    {
+      "id": "wechat-7da9c33f46f696cc",
+      "sourceId": "1038",
+      "type": "text",
+      "author": "芳姐",
+      "text": "开的，上午都在",
+      "createdAt": "2026-08-16T13:40:00Z"
+    },
+    {
+      "id": "wechat-558ac353ef38796c",
+      "sourceId": "1039",
+      "type": "text",
+      "author": "302王阿姨",
+      "text": "芳姐看到消息了吗？桃子坏果的事",
+      "createdAt": "2026-08-17T02:05:00Z"
+    },
+    {
+      "id": "wechat-c96beb454890ea9f",
+      "sourceId": "1040",
+      "type": "voice",
+      "author": "刘婶",
+      "text": "[voice]",
+      "createdAt": "2026-08-17T03:30:00Z"
+    },
+    {
+      "id": "wechat-c3bcbc770564b795",
+      "sourceId": "1041",
+      "type": "text",
+      "author": "芳姐",
+      "text": "下周团购预告明天发，这周谢谢大家支持",
+      "createdAt": "2026-08-17T06:00:00Z"
+    },
+    {
+      "id": "wechat-f1607799c3d29f2c",
+      "sourceId": "1042",
+      "type": "text",
+      "author": "李姐",
+      "text": "辛苦芳姐",
+      "createdAt": "2026-08-17T06:03:00Z"
+    }
+  ]
+}

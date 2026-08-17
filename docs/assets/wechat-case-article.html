@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>收摊以后，我又多接住了几单 · 公众号推文</title>
+<style>
+  :root {
+    --paper:#FBF9F4; --ink:#20261F; --muted:#6C7168; --faint:#9AA095;
+    --line:#E7E4DA; --card:#FFFFFF;
+    --wx:#07C160; --wx-deep:#05934A; --wx-bg:#EAF7EF;
+    --peach:#E08A5B; --peach-bg:#FBEEE4;
+    --plum:#8A5A7A;
+    --night-1:#12211A; --night-2:#1C3227; --night-3:#0C1712;
+    --serif:"Noto Serif SC","Songti SC",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --mono:"SF Mono",ui-monospace,Menlo,monospace;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#E9E6DE; color:var(--ink); font-family:var(--sans);
+    line-height:1.85; font-size:16px; -webkit-font-smoothing:antialiased; }
+  .wx-frame { max-width:438px; margin:0 auto; background:var(--paper);
+    box-shadow:0 1px 60px rgba(20,33,26,.14); }
+  .wx-bar { position:sticky; top:0; z-index:9; display:flex; align-items:center; gap:8px;
+    padding:11px 16px; background:rgba(251,249,244,.9); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line); font-size:13px; color:var(--muted); }
+  .wx-bar .dot { width:8px;height:8px;border-radius:50%;background:var(--wx); box-shadow:0 0 0 3px var(--wx-bg); }
+  .wx-bar .acct { font-weight:600; color:var(--ink); }
+  .wx-bar .more { margin-left:auto; letter-spacing:2px; }
+  a { color:var(--wx-deep); }
+  :focus-visible { outline:2px solid var(--wx); outline-offset:2px; }
+
+  /* hero */
+  .hero { position:relative; padding:52px 26px 40px; color:#EFEDE4; overflow:hidden;
+    background:radial-gradient(120% 90% at 82% 8%, var(--night-2) 0%, var(--night-1) 46%, var(--night-3) 100%); }
+  .hero .kicker { font-size:12.5px; letter-spacing:.24em; color:#7FD3A2; margin-bottom:20px; }
+  .hero h1 { font-family:var(--serif); font-weight:900; font-size:35px; line-height:1.32;
+    letter-spacing:.02em; margin:0 0 18px; }
+  .hero h1 .mk { color:#8FE3B0; }
+  .hero .lede { font-size:15px; color:#B9C4B7; margin:0; max-width:33ch; }
+  .hero .by { margin-top:26px; padding-top:16px; border-top:1px solid rgba(255,255,255,.12);
+    display:flex; align-items:center; gap:10px; font-size:12.5px; color:#8E9A8C; }
+  .hero .by .av { width:26px;height:26px;border-radius:7px;
+    background:linear-gradient(135deg,var(--wx),var(--peach)); }
+  .hero .glow { position:absolute; right:-60px; top:-40px; width:200px; height:200px;
+    background:radial-gradient(circle,rgba(7,193,96,.32),transparent 68%); filter:blur(6px); }
+
+  .body { padding:34px 26px 8px; }
+  .body > p { margin:0 0 20px; }
+  .lead-drop::first-letter { font-family:var(--serif); font-weight:900; font-size:3.1em;
+    float:left; line-height:.82; padding:6px 10px 0 0; color:var(--wx-deep); }
+  .sub { display:flex; align-items:baseline; gap:10px; margin:40px 0 18px; }
+  .sub .idx { font-family:var(--serif); font-size:13px; color:var(--wx-deep); letter-spacing:.1em;
+    border:1px solid var(--wx); border-radius:100px; padding:2px 10px; white-space:nowrap; }
+  .sub h2 { font-family:var(--serif); font-size:22px; font-weight:900; margin:0; letter-spacing:.02em; }
+  em.hl { font-style:normal; background:linear-gradient(transparent 62%, rgba(7,193,96,.24) 0); padding:0 1px; }
+  strong { font-weight:700; }
+
+  /* wechat chat mockup */
+  .chat { margin:22px 0; padding:18px 15px 14px; border-radius:16px;
+    background:linear-gradient(180deg,#EDEBE4,#E9E6DD); }
+  .chat .day { text-align:center; font-size:11px; color:var(--faint); margin-bottom:14px; }
+  .msg { display:flex; gap:9px; margin-bottom:14px; align-items:flex-start; }
+  .msg .av { width:34px;height:34px;border-radius:7px; flex:none; font-size:11px; color:#fff;
+    display:flex;align-items:center;justify-content:center;text-align:center; font-weight:600; line-height:1.05; padding:2px; }
+  .msg .stack { max-width:78%; }
+  .msg .nm { font-size:11px; color:var(--faint); margin:0 0 3px 2px; }
+  .msg .bub { position:relative; background:#fff; border-radius:5px; padding:9px 12px;
+    font-size:14.5px; line-height:1.5; box-shadow:0 1px 1px rgba(0,0,0,.04); }
+  .msg .bub::before { content:""; position:absolute; left:-5px; top:12px;
+    border:6px solid transparent; border-right-color:#fff; }
+  .msg.unread .bub { box-shadow:0 0 0 1.5px var(--peach); }
+  .msg .flag { display:inline-flex; align-items:center; gap:4px; margin-top:6px;
+    font-size:11px; color:var(--peach); font-family:var(--mono); }
+  .msg .flag::before { content:"●"; font-size:7px; }
+  .av-a{background:#C77B4E;} .av-b{background:#5B94C7;} .av-c{background:#7FA35B;}
+  .av-d{background:#9A6FA0;} .av-e{background:#C79A4E;}
+
+  .stat-strip { margin:24px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    padding:16px 0; }
+  .stat-strip .q { font-family:var(--serif); font-size:16px; line-height:1.7; margin:0; }
+  .stat-strip .q b { color:var(--peach); font-weight:900; font-size:1.15em; }
+  .stat-strip cite { display:block; margin-top:8px; font-style:normal; font-size:12px; color:var(--faint); }
+
+  .turn { margin:34px 0; padding:22px 20px; border-radius:16px; color:#EDEDE6;
+    background:linear-gradient(135deg,var(--night-2),var(--night-1)); }
+  .turn .t { font-family:var(--serif); font-size:19px; font-weight:800; margin:0 0 8px; }
+  .turn .t .mk { color:#8FE3B0; }
+  .turn p { margin:0; font-size:14px; color:#B4C0B2; }
+
+  /* report reveal */
+  .report { margin:24px 0; border:1px solid var(--line); border-radius:16px; overflow:hidden;
+    background:var(--card); box-shadow:0 14px 34px -20px rgba(20,33,26,.4); }
+  .report .rhead { padding:18px 18px 14px; border-bottom:2px solid var(--ink);
+    background:linear-gradient(180deg,#fff,#FCFBF7); }
+  .report .rhead .tag { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); }
+  .report .rhead .tag .live { display:inline-flex; align-items:center; gap:5px; }
+  .report .rhead .tag .live::before { content:"";width:6px;height:6px;border-radius:50%;background:var(--wx);box-shadow:0 0 0 3px var(--wx-bg);}
+  .report .rhead h3 { font-family:var(--serif); font-size:24px; font-weight:900; margin:8px 0 2px; letter-spacing:.04em; }
+  .report .rhead .per { font-family:var(--mono); font-size:11px; color:var(--faint); }
+  .report .kpi { display:grid; grid-template-columns:1fr 1fr; }
+  .report .kpi > div { padding:14px 16px; border-top:1px solid var(--line); }
+  .report .kpi > div:nth-child(even){ border-left:1px solid var(--line); }
+  .report .kpi .n { font-family:var(--serif); font-size:30px; font-weight:900; line-height:1; font-variant-numeric:tabular-nums; }
+  .report .kpi .l { font-size:12.5px; font-weight:600; margin-top:5px; }
+  .report .kpi .s { font-size:11px; color:var(--faint); margin-top:1px; }
+  .k-amber .n{color:var(--peach);} .k-green .n{color:var(--wx-deep);} .k-red .n{color:#B8402C;} .k-ink .n{color:var(--ink);}
+
+  .fcard { padding:16px 18px; border-top:6px solid var(--paper); }
+  .fcard .top { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .fcard .rk { font-family:var(--serif); font-weight:900; font-size:20px; color:#C9CFC6; }
+  .fcard .ti { font-weight:700; font-size:15px; }
+  .fcard .chip { font-size:10.5px; font-weight:600; padding:1px 8px; border-radius:100px; }
+  .chip-g{color:var(--wx-deep);background:var(--wx-bg);} .chip-w{color:var(--peach);background:var(--peach-bg);}
+  .fcard .who { font-size:12px; color:var(--muted); margin:5px 0 0 28px; }
+  .fcard .ev { margin:10px 0 0 28px; padding:9px 12px; background:#F5F7F3; border-left:3px solid var(--wx);
+    border-radius:0 6px 6px 0; font-size:13px; }
+  .fcard .ev .cap { margin-top:5px; font-size:10.5px; color:var(--faint); font-family:var(--mono); }
+  .fcard .rep { margin:9px 0 0 28px; display:flex; gap:9px; align-items:flex-start;
+    background:var(--wx-bg); border-radius:8px; padding:9px 11px; }
+  .fcard .rep .rl { font-size:10.5px; font-weight:700; color:var(--wx-deep); white-space:nowrap; padding-top:2px; }
+  .fcard .rep .rt { font-size:13px; }
+  .report .rmore { padding:12px 18px; text-align:center; font-size:12px; color:var(--muted);
+    border-top:1px dashed var(--line); background:#FCFBF7; }
+
+  .steps { margin:20px 0; padding:0; list-style:none; counter-reset:s; }
+  .steps li { position:relative; padding:0 0 18px 42px; }
+  .steps li::before { counter-increment:s; content:counter(s); position:absolute; left:0; top:-2px;
+    width:28px;height:28px;border-radius:9px; background:var(--wx); color:#fff; font-weight:700;
+    display:flex;align-items:center;justify-content:center; font-size:14px; }
+  .steps li:not(:last-child)::after { content:""; position:absolute; left:13.5px; top:30px; bottom:2px; width:1.5px; background:var(--line); }
+  .steps b { display:block; font-size:15px; margin-bottom:2px; }
+  .steps span { font-size:13.5px; color:var(--muted); }
+
+  .guard { margin:22px 0; border-radius:14px; border:1px solid var(--line); overflow:hidden; }
+  .guard .gh { padding:12px 16px; background:#F5F3EC; font-weight:700; font-size:14px;
+    display:flex; align-items:center; gap:8px; }
+  .guard .gh .lock { color:var(--wx-deep); }
+  .guard ul { margin:0; padding:12px 18px 14px 34px; }
+  .guard li { font-size:13.5px; margin-bottom:7px; color:#3c4238; }
+  .guard li b { color:var(--ink); }
+
+  .cta { margin:30px 0 8px; padding:26px 22px; border-radius:16px; color:#EDEDE6; text-align:center;
+    background:linear-gradient(135deg,var(--night-2),var(--night-3)); }
+  .cta .ck { font-size:12px; letter-spacing:.2em; color:#7FD3A2; }
+  .cta h2 { font-family:var(--serif); font-size:22px; font-weight:900; margin:10px 0 6px; color:#fff; }
+  .cta p { font-size:13.5px; color:#AEBAAC; margin:0 0 16px; }
+  .cta code { display:block; font-family:var(--mono); font-size:11.5px; background:rgba(0,0,0,.32);
+    color:#CFE9D8; padding:12px 14px; border-radius:9px; text-align:left; line-height:1.7;
+    overflow-x:auto; white-space:pre; }
+  .cta .gh-link { display:inline-block; margin-top:16px; font-size:13px; color:#8FE3B0; font-weight:600; }
+
+  footer { padding:24px 26px 40px; text-align:center; color:var(--faint); font-size:11.5px; }
+  footer .disc { margin-top:8px; line-height:1.7; }
+  @media (prefers-reduced-motion:no-preference){ .wx-frame{scroll-behavior:smooth;} }
+</style>
+</head>
+<body>
+<article class="wx-frame">
+
+  <div class="wx-bar"><span class="dot"></span><span class="acct">AQM 的经营笔记</span><span>· 3 分钟</span><span class="more">···</span></div>
+
+  <header class="hero">
+    <div class="glow"></div>
+    <div class="kicker">连接微信 · 一个真实用得上的场景</div>
+    <h1>收摊以后，<br>我又能<span class="mk">多接住</span>几单了</h1>
+    <p class="lede">三个客户群、每天几百条消息。以前晚上翻不完，第二天才发现漏了单。现在收摊后一句话，五分钟一份经营周报。</p>
+    <div class="by"><span class="av"></span><span>AQM 的经营笔记 · 2026-08-18 · 开源工具实录</span></div>
+  </header>
+
+  <div class="body">
+
+    <p class="lead-drop">芳姐在小区里卖水果，手上三个客户群：1 号院、2 号院，还有一个老客户 VIP 群。白天群里几百条消息滚过去——接龙、晒图、问价、催货，偶尔一条投诉。晚上收摊，她想翻一遍谁还没回，可消息早刷到看不见头。</p>
+
+    <p>漏掉的，往往就是钱。比如这几条，滑过去就再也没被想起：</p>
+
+    <div class="chat" role="img" aria-label="微信群里被淹没的客户消息示意">
+      <div class="day">上周 · 客户群节选</div>
+      <div class="msg unread">
+        <div class="av av-d">楠楠</div>
+        <div class="stack"><p class="nm">楠楠 · 老客户VIP群</p>
+          <div class="bub">中秋礼盒开始订了吗？我们部门想订20盒，预算100左右一盒</div>
+          <div class="flag">约 2000 元 · 无人回应</div></div>
+      </div>
+      <div class="msg unread">
+        <div class="av av-a">王阿姨</div>
+        <div class="stack"><p class="nm">302王阿姨 · 幸福里1号院</p>
+          <div class="bub">芳姐 昨天的水蜜桃有两个是坏的，你看怎么说</div>
+          <div class="flag">投诉 · 已追问一次仍没回</div></div>
+      </div>
+      <div class="msg unread">
+        <div class="av av-e">Amy</div>
+        <div class="stack"><p class="nm">Amy · 老客户VIP群</p>
+          <div class="bub">你们能开发票吗？公司下午茶想在你这儿订水果</div>
+          <div class="flag">企业客户 · 等了 4 天</div></div>
+      </div>
+    </div>
+
+    <p>不是芳姐不上心，是<em class="hl">人的眼睛扛不住几百条消息的冲刷</em>。这也不是她一个人的处境——</p>
+
+    <div class="stat-strip">
+      <p class="q">私域行业自己的数据说：单日未被及时回复的客户消息可达 <b>5–10</b> 条，约 <b>15%</b> 的潜在客户会在一个月内静默流失。</p>
+      <cite>—— 微伴助手（企业微信服务商）营销博客</cite>
+    </div>
+
+    <p>市面上不是没有工具。但那些私域 SCRM 都<strong>绑企业微信、按年付费</strong>；像芳姐这样用<strong>个人微信群</strong>的团长、个体店主，恰好落在它们够不着的地方。而这样的人，全国有几百万——单是快团团就有 600 万+ 团长。</p>
+
+    <div class="sub"><span class="idx">壹</span><h2>把聊天，变成自己的数据</h2></div>
+
+    <p>思路其实很朴素：<em class="hl">既然价值沉在聊天记录里，那就先把它变成自己能用的数据。</em></p>
+
+    <p>芳姐用一个开源工具，把她<strong>有权访问的</strong>三个群、上一周的记录，<strong>只读</strong>导出成了本地文件——不改微信、不上传、不发消息，全程在自己电脑上。然后她只说了一句话：</p>
+
+    <div class="turn">
+      <p class="t">“把这三个群上周的记录出一份<span class="mk">经营周报</span>，我在群里叫芳姐。谁的提问没人回、有哪些想买的、有没有投诉要处理，给我能直接发的话术。”</p>
+    </div>
+
+    <p>五分钟后，一份周报生成了。真正让她敢照着做的，是<strong>每一条结论都能点回群里的原话</strong>——不是 AI 拍脑袋，是有据可查。</p>
+
+    <div class="sub"><span class="idx">贰</span><h2>五分钟后，她看到的</h2></div>
+
+    <div class="report">
+      <div class="rhead">
+        <div class="tag"><span>鲜丰水果·幸福里店</span><span class="live">本地生成 · 未离开这台电脑</span></div>
+        <h3>客户群经营周报</h3>
+        <div class="per">覆盖 3 个群 · 93 条消息 · 8月11日—8月17日</div>
+      </div>
+      <div class="kpi">
+        <div class="k-amber"><div class="n">6</div><div class="l">未回复的客户提问</div><div class="s">最久已等 5 天</div></div>
+        <div class="k-green"><div class="n">5</div><div class="l">购买意向线索</div><div class="s">2 条备注了金额</div></div>
+        <div class="k-red"><div class="n">2</div><div class="l">风险与投诉</div><div class="s">1 条未处理</div></div>
+        <div class="k-ink"><div class="n">5</div><div class="l">建议今天跟进</div><div class="s">每条附话术</div></div>
+      </div>
+      <div class="fcard">
+        <div class="top"><span class="rk">1</span><span class="ti">中秋礼盒 20 盒的企业订单在等报价</span><span class="chip chip-g">意向</span></div>
+        <div class="who"><b>楠楠</b> · 老客户VIP群 · 已等 1 天</div>
+        <div class="ev">“中秋礼盒开始订了吗？我们部门想订20盒，预算100左右一盒”
+          <div class="cap">楠楠 · 8月17日 21:47 · wechat-1b52…b020</div></div>
+        <div class="rep"><span class="rl">建议回复</span><span class="rt">楠楠早！中秋礼盒这两天刚定档，有 88/108/128 三档……我今天把图册和报价发您。</span></div>
+      </div>
+      <div class="fcard">
+        <div class="top"><span class="rk">2</span><span class="ti">坏果投诉拖了两天，追问一次仍没回</span><span class="chip chip-w">风险</span></div>
+        <div class="who"><b>302王阿姨</b> · 幸福里1号院团购群 · 已等 2 天</div>
+        <div class="ev">“芳姐 昨天的水蜜桃有两个是坏的，你看怎么说”
+          <div class="cap">302王阿姨 · 8月16日 09:35 · wechat-5a45…a7a1</div></div>
+      </div>
+      <div class="rmore">…… 还有 3 条建议跟进、完整的意向与风险清单、群活跃概览</div>
+    </div>
+
+    <p>芳姐不用读一条聊天记录，就知道今天开门前该先给谁回话。<em class="hl">最该赚的那两千块，没有再从指缝里漏掉。</em></p>
+
+    <div class="sub"><span class="idx">叁</span><h2>最后一公里：让电脑帮你把话回出去</h2></div>
+
+    <p>知道该做什么，还差把话真的回出去。这一步交给桌面端的 computer use——它直接操作<strong>芳姐本人已登录</strong>的微信界面，但每一步都刻意地慢而稳，因为发出去的每句话都是以她的名义、发给真实的客户：</p>
+
+    <ol class="steps">
+      <li><b>先给你过目</b><span>要发哪几条、发给谁、逐字话术，列清单让你挑，可以改词。</span></li>
+      <li><b>默认你按发送</b><span>它只把话术粘进输入框，发送键你自己点；你明确说“这几条帮我发”才代发。</span></li>
+      <li><b>发前核对群名</b><span>粘之前先截图确认打开的是“1号院”不是“2号院”——最怕的就是对的话发错群。</span></li>
+      <li><b>小步、可退</b><span>一次最多 10 条、一次一个群、拒绝“所有群都发一遍”；没有屏幕控制工具时，降级成剪贴板清单，绝不谎称已发送。</span></li>
+    </ol>
+
+    <p>到这里，“连接微信”这件事的价值链才算完整：<strong>读</strong>（把沉在群里的聊天变成本地数据）→ <strong>判断</strong>（变成能追溯的经营决策）→ <strong>行动</strong>（在你确认下把决策落地）。</p>
+
+    <div class="sub"><span class="idx">肆</span><h2>把丑话说在前面</h2></div>
+
+    <div class="guard">
+      <div class="gh"><span class="lock">🔒</span>这套工具刻意不做什么</div>
+      <ul>
+        <li><b>首次接入是高风险流程。</b>让 AI 读到自己的微信，前提是一次性取钥——非官方、版本相关、有封号与隐私风险。非必要不要尝试；日常用的商家通常只在自己电脑上做一次。</li>
+        <li><b>只读、本地、不外传。</b>导出、周报都在本机生成、默认打码、以最严文件权限写盘，不上传、不回写微信。</li>
+        <li><b>发送永远要人点头。</b>不群发、不冷启动骚扰、不替你编价格；话术只承诺你真实说过的东西。</li>
+        <li><b>只面向你有权访问的群。</b>这是梳理自己的客户群，不是监控、不是爬别人的数据。</li>
+      </ul>
+    </div>
+
+    <p>这套姿态不是保守，是它能长期站得住的原因——也是它和“破解教程”的根本区别。</p>
+
+    <div class="cta">
+      <div class="ck">开 源 · 可 组 合 · 自 己 可 审 计</div>
+      <h2>三件套，都开源</h2>
+      <p>只读导出 · 证据核验的周报 · 逐条确认的跟进</p>
+      <code>npx skills add \
+  aqm857886159/aqm-s-skills \
+  --skill wechat-chat-export \
+    wechat-group-insights \
+    wechat-followup-assist</code>
+      <a class="gh-link" href="https://github.com/aqm857886159/aqm-s-skills">github.com/aqm857886159/aqm-s-skills →</a>
+    </div>
+
+  </div>
+
+  <footer>
+    AQM 的经营笔记 · 用得上的开源工具实录
+    <div class="disc">文中“芳姐水果店”为演示用虚构场景，聊天与人物均为合成数据，用于展示能力而非真实客户。<br>周报截面取自可运行的真实产物，每条结论均可点回原始消息。</div>
+  </footer>
+
+</article>
+</body>
+</html>

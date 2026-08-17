@@ -1,0 +1,4 @@
+interface:
+  display_name: "WeChat Followup Assist"
+  short_description: "Send approved followup replies via UI automation"
+  default_prompt: "Use $wechat-followup-assist to place my approved followup replies into the right WeChat chats, one confirmed message at a time."
